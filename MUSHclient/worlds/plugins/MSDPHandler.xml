@@ -1,13 +1,13 @@
-<?xml version="1.0" encoding="iso-8859-1" ?> 
-<!DOCTYPE muclient>  
+<?xml version="1.0" encoding="iso-8859-1" ?>
+<!DOCTYPE muclient>
 <muclient>
-<plugin name="MSDPHandler" 
-author="Other" 
-id="b3aae34498d5bf19b5b2e2af" 
-language="Lua" 
-purpose="Handle MSDP Communications" 
-save_state="y" 
-requires="4.73" 
+<plugin name="MSDPHandler"
+author="Other"
+id="b3aae34498d5bf19b5b2e2af"
+language="Lua"
+purpose="Handle MSDP Communications"
+save_state="y"
+requires="4.73"
 version="0.56">
 <description trim="y">
 <![CDATA[
@@ -21,7 +21,7 @@ and stored in a global table for other plugins to access.
 
 To use this plugin to send MSDP variables to your plugin, enter this into the top of your plugin code:
   dofile(GetPluginInfo(GetPluginID(), 20) .. "MSDPHelper.lua")
-	
+
 Then whenever you want to set a variable, use this syntax:
   myVariable = getmsdp("VARIABLE NAME")
 
@@ -31,7 +31,16 @@ Parts of this plugin were based on GMCP_handler written by Lasher of AardwolfMud
 ]]>
 
 </description>
+<!--
 
+Thanks to Fiendish of Aardwolf who provided the base and starting point for all of this.
+Original files sourced from: https://github.com/fiendish/aardwolfclientpackage
+My process: http://www.gammon.com.au/forum/?id=14718
+Thank you!!
+
+My Github : https://github.com/Xinefus-Braska
+
+ -->
 </plugin>
 
 <triggers>
@@ -50,7 +59,7 @@ Parts of this plugin were based on GMCP_handler written by Lasher of AardwolfMud
 </timers>
 
 <script>
-<![CDATA[ 
+<![CDATA[
 
 AUTHOR = GetPluginInfo(GetPluginID(), 2) -- author info
 VERSION = string.format("%1.2f", GetPluginInfo(GetPluginID(), 19)) -- version info
@@ -116,7 +125,7 @@ function OnPluginTelnetSubnegotiation (type, data)
 	if type ~= MSDP then
 		return
 	end
-	
+
   -- output full data in hex to preserve non-printable chars
 	if MSDPDebug > 1 then ColourNote ("darkorange", "", "hex="..utils.tohex(data)) end
 
