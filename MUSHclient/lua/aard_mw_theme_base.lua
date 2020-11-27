@@ -16,37 +16,25 @@ Steps for use: (also see https://github.com/fiendish/aardwolfclientpackage/wiki/
 5) Optional: If your plugin wants to preserve state between theme changes (changing theme reloads the plugin),
    you can detect whether the plugin is closing because of a theme change with GetVariable(Theme.reloading_variable).
 --]]
-
---[[
-
-Thanks to Fiendish of Aardwolf who provided the base and starting point for all of this.
-Original files sourced from: https://github.com/fiendish/aardwolfclientpackage
-My process: http://www.gammon.com.au/forum/?id=14718
-Thank you!!
-
-My Github for DBNU: https://github.com/Xinefus-Braska
-
---]]
-
 require "checkplugin"
 require "movewindow"
-dofile(GetPluginInfo(GetPluginID(), 20) .. "DBUMMO_colors.lua")
+dofile(GetInfo(60) .. "aardwolf_colors.lua")
 
 module ("Theme", package.seeall)
 
-function b9315e040989d3f81f4328d6() -- Theme_controller
+function b9315e040989d3f81f4328d6()
    -- used for theme system detection
    return true
 end
 
-theme_dir = GetInfo(66).."worlds\\plugins\\DBU - MMO\\mw_themes\\"
+theme_dir = GetInfo(66).."lua\\mw_themes\\"
 theme_file = "Charcoal.lua"
 
 function get_theme()
    return theme_file
 end
 
-reloading_variable = "DBUMMO_theme_just_reloading"
+reloading_variable = "aard_theme_just_reloading"
 
 function just_reloading()
    SetVariable(reloading_variable, 1)
@@ -87,8 +75,11 @@ local default_theme = {
    SCROLL_TRACK_COLOR2 = 0x888888,
    VERTICAL_TRACK_BRUSH = miniwin.brush_hatch_forwards_diagonal,
 
-   DYNAMIC_BUTTON_PADDING = 20,
-   RESIZER_SIZE = 16
+   VERTICAL_BUTTON_PADDING = 15,
+   HORIZONTAL_BUTTON_PADDING = 20,
+   RESIZER_SIZE = 16,
+
+   DYNAMIC_BUTTON_PADDING = 20  -- deprecated
 }
 
 function load_theme(file)
@@ -116,8 +107,33 @@ function load_theme(file)
    end
 end
 
+-- junk files that should not have existed in the first place
+local bad_shas = {
+   ["default.lua"] = {
+      ["d189be39efb49730537c8ada65fbd5382d3e44ad"] = true,
+      ["39d9b7fc4d571ac62d1005b52f8da43c4b7827e1"] = true,
+      ["774bdd2f098f1c4fe81d9a6b8eb5bfad6bd79c51"] = true,
+      ["b7fd919be678f0c7b1c52bea644f183a7b9397f1"] = true,
+      ["acc1d615901050b2faa50e1b0497ee30b72f5118"] = true,
+      ["ac993b349691eb51e472ca5b1b0ae18a03943bf2"] = true,
+      ["0cd5bcca0723a57eabedd08a9cfa6f4ec93ea469"] = true
+  },
+  ["dark_pony.lua"] = {
+      ["d189be39efb49730537c8ada65fbd5382d3e44ad"] = true
+  },
+   ["Joker.lua"] = {
+      ["17fa722746df781326b100744dd790c66721b749"] = true,
+      ["b2b83804ce87eb889127658cb80c9d23d76082b4"] = true
+  }
+}
+
+require "gitsha"
+function theme_has_bad_sha(filename)
+   return bad_shas[filename] and bad_shas[filename][gitsha(theme_dir..filename)]
+end
+
 local theme_controller_ID = "b9315e040989d3f81f4328d6"
-local theme_controller_name = "DBUMMO_Theme_Controller"
+local theme_controller_name = "aard_Theme_Controller"
 
 function _load_controller()
    if not GetInfo(119) then
@@ -139,9 +155,9 @@ if (GetPluginID() ~= theme_controller_ID) then
 
    local maybe_theme_file = GetPluginVariable(theme_controller_ID, "theme_file") or theme_file
 
-   --if not maybe_theme_file then
+   if not theme_has_bad_sha(maybe_theme_file) then
       theme_file = maybe_theme_file
-   --end
+   end
 
    load_theme(theme_file)
 end
@@ -189,18 +205,31 @@ function Draw3DRect (win, left, top, right, bottom, depressed)
    end
 end
 
-function Draw3DTextBox(win, font, left, top, text, utf8, depressed, x_padding, y_padding)
+function Draw3DTextBox(win, font, left, top, text, utf8, depressed, x_padding, y_padding, width, height)
    x_padding = x_padding or 0
    y_padding = y_padding or 0
-   local right = left + WindowTextWidth(win, font, text, utf8) + (2*x_padding)
-   local bottom = top + TextHeight(win, font) + (2*y_padding)
-   Draw3DRect(win, left, top, right+4, bottom+2, depressed)
+   text = text or ""
+   local text_width = WindowTextWidth(win, font, text, utf8)
+   local text_height = WindowFontInfo(win, font, 1)
+   if width then
+      right = left + width
+   else
+      right = (left + text_width + (2*x_padding) + 4)
+   end
+   if height then
+      bottom = top + height
+   else
+      bottom = (top + text_height + (2*y_padding)) + 2
+   end
+   Draw3DRect(win, left, top, right, bottom, depressed)
    local offset = 0
    if depressed then
       offset = 2
    end
-   WindowText(win, font, text, left+2+x_padding+offset, top+1+y_padding+offset, right+1, bottom+1, THREE_D_SURFACE_DETAIL, utf8)
-   return right-left
+   local text_left = math.max(left + 2, (left + right - text_width)/2)
+   local text_top = math.max(top, (top + bottom + 2 - text_height)/2)
+   WindowText(win, font, text, text_left + offset, text_top + offset, right-1, bottom-1, THREE_D_SURFACE_DETAIL, utf8)
+   return right, bottom
 end
 
 function DrawTextBox(win, font, left, top, text, utf8, outlined, bgcolor, textcolor, x_padding, y_padding)
@@ -213,7 +242,7 @@ function DrawTextBox(win, font, left, top, text, utf8, outlined, bgcolor, textco
    x_padding = x_padding or 0
    y_padding = y_padding or 0
    local right = left + WindowTextWidth(win, font, text, utf8) + 4 + (2*x_padding)
-   local bottom = top + TextHeight(win, font) + (2*y_padding)
+   local bottom = top + WindowFontInfo(win, font, 1) + (2*y_padding)
    WindowRectOp(win, 2, left, top+1, right, bottom+2, bgcolor)
    if outlined then
       WindowRectOp(win, 1, left-1, top, right+1, bottom+3, textcolor)
@@ -222,13 +251,59 @@ function DrawTextBox(win, font, left, top, text, utf8, outlined, bgcolor, textco
    return right-left
 end
 
+Theme.button_callbacks = {}
+Theme.button_metrics = {}
+function Add3DTextButton(win, button_id, font, left, top, text, utf8, x_padding, y_padding, tooltip, mousedown_callback, mouseup_callback, width, height)
+   if type(win) == "table" then
+      win = win.id
+   end
+   x_padding = x_padding or VERTICAL_BUTTON_PADDING or DYNAMIC_BUTTON_PADDING
+   y_padding = y_padding or HORIZONTAL_BUTTON_PADDING or DYNAMIC_BUTTON_PADDING
+   local right, bottom = Draw3DTextBox(win, font, left, top, text, utf8, false, x_padding, y_padding, width, height)
+   Theme.button_metrics[button_id] = {win, font, left, top, text, utf8, x_padding, y_padding, width, height}
+   Theme.button_callbacks[button_id] = {mousedown_callback=mousedown_callback, mouseup_callback=mouseup_callback}
+   if WindowMoveHotspot(win, button_id, left, top, right, bottom) ~= 0 then
+      WindowAddHotspot(win, button_id, left, top, right, bottom, nil, nil, "Theme.ThreeDeeTextButtonMouseDown", "Theme.ThreeDeeTextButtonMouseCancel", "Theme.ThreeDeeTextButtonMouseUp", tooltip, 1, 0)
+   end
+   return right, bottom
+end
+
+function ThreeDeeTextButtonMouseDown(flags, hotspot_id)
+   local callbacks = Theme.button_callbacks[hotspot_id]
+   local win, font, left, top, text, utf8, x_padding, y_padding, width, height= unpack(Theme.button_metrics[hotspot_id])
+   if callbacks.mousedown_callback then
+      if callbacks.mousedown_callback(flags, hotspot_id) then
+         return
+      end
+   end
+   Draw3DTextBox(win, font, left, top, text, utf8, true, x_padding, y_padding, width, height)
+   CallPlugin("abc1a0944ae4af7586ce88dc", "BufferedRepaint")
+end
+
+function ThreeDeeTextButtonMouseUp(flags, hotspot_id)
+   local callbacks = Theme.button_callbacks[hotspot_id]
+   local win, font, left, top, text, utf8, x_padding, y_padding, width, height = unpack(Theme.button_metrics[hotspot_id])
+   Draw3DTextBox(win, font, left, top, text, utf8, false, x_padding, y_padding, width, height)
+   if callbacks.mouseup_callback then
+      callbacks.mouseup_callback(flags, hotspot_id)
+   end
+   CallPlugin("abc1a0944ae4af7586ce88dc", "BufferedRepaint")
+end
+
+function ThreeDeeTextButtonMouseCancel(flags, hotspot_id)
+   local win, font, left, top, text, utf8, x_padding, y_padding, width, height = unpack(Theme.button_metrics[hotspot_id])
+   Draw3DTextBox(win, font, left, top, text, utf8, false, x_padding, y_padding, width, height)
+   CallPlugin("abc1a0944ae4af7586ce88dc", "BufferedRepaint")
+end
+
 function AddResizeTag(win, type, x1, y1, mousedown_callback, dragmove_callback, dragrelease_callback)
    local x1, y1 = DrawResizeTag(win, type, x1, y1)
 
    -- Add handler hotspots
-   if WindowMoveHotspot(win, "resize", x1, y1, 0, 0) ~= 0 then
-      WindowAddHotspot(win, "resize", x1, y1, 0, 0, nil, nil, mousedown_callback, nil, nil, "", 6, 0)
-      WindowDragHandler(win, "resize", dragmove_callback, dragrelease_callback, 0)
+   local hs = win.."_resize"
+   if WindowMoveHotspot(win, hs, x1, y1, 0, 0) ~= 0 then
+      WindowAddHotspot(win, hs, x1, y1, 0, 0, nil, nil, mousedown_callback, nil, nil, "", 6, 0)
+      WindowDragHandler(win, hs, dragmove_callback, dragrelease_callback, 0)
    end
 
    return x1, y1
@@ -278,88 +353,97 @@ function TextHeight(win, font)
 end
 
 -- title_alignment can be "left", "right", or "center" (the default)
-function DressWindow(win, font, title, title_alignment)
+function DressWindow(win, font, title, title_alignment, title_leftpadding)
    local l, t, r, b = DrawBorder(win)
 
-   if title and (title ~= "") then
-      t = DrawTitleBar(win, font, title, title_alignment)
-      if t > 1 then
-         movewindow.add_drag_handler(win, 0, 0, 0, t)
-      end
+   if title and ((type(title) == "string") or (#title > 0)) then
+      t = DrawTitleBar(win, font, title, title_alignment, title_leftpadding)
+      movewindow.add_drag_handler(win, 0, 0, 0, t)
+   else
+      movewindow.add_drag_handler(win, 0, 0, 0, 0)
    end
 
    return l, t, r, b
 end
 
-function DrawTitleBar(win, font, title, text_alignment, utf8)
-   local title_lines
-   if type(title) == "string" then
-      title_lines = utils.split(title, "\n")
-   else
-      title_lines = title
-   end
-
-   local line_height = 0
+function BodyMetrics(win, font, title_line_height, num_title_lines)
+   local l, t, r, b = BorderMetrics(win)
    local title_height = 0
-   if font and title_lines then
-      line_height = TextHeight(win, font)
-      if line_height == nil then
+   if num_title_lines > 0 then
+      if title_line_height == nil then
         return (2*TITLE_PADDING)
       end
-      title_height = (2*TITLE_PADDING) + (line_height * #title_lines)
+      title_height = (2*TITLE_PADDING) + (title_line_height * num_title_lines) + 1
+      t = title_height + 1
    end
+   return title_height, l, t, r, b
+end
+
+
+function ToMultilineStyles(msg)
+   if type(msg) == "string" then
+      msg = ColoursToStyles(msg, Theme.THREE_D_SURFACE_DETAIL, nil, true, true)
+   elseif type(msg) == "table" then
+      if msg.text then  -- single style, wrap in line and container
+         msg = {{msg}}
+      elseif msg[1] then
+         if msg[1].text then  -- single line, wrap in container
+            msg = {msg}
+         elseif msg[1][1] then
+            if msg[1][1].text or (msg[1][1][1] == nil) then  -- already multiline styles (probably)
+               return msg
+            else
+               return nil
+            end
+         end
+      else  -- empty
+         msg = {{{}}}
+      end
+   else 
+      return nil
+   end
+   return msg
+end
+
+
+function DrawTitleBar(win, font, title, title_alignment, title_leftpadding, utf8)
+   local title_lines = ToMultilineStyles(title)
+   assert(title_lines, "Title must be a string, table of styles, or table of tables of styles.")
+
+   local title_line_height = WindowFontInfo(win, font, 1)
+   local title_height, l, t, r, b = BodyMetrics(win, font, title_line_height, #title_lines)
 
    __theme_istitle = true
-   Draw3DRect(
-      win,
-      -1,
-      -1,
-      WindowInfo(win, 3)-1,
-      title_height,
-      false
-   )
+   Draw3DRect(win, -1, -1, WindowInfo(win, 3)-1, title_height, false)
 
    local first_color = nil
    local txt = nil
-   for i,v in ipairs(title_lines) do
-      if type(v) == "table" then
-         txt = v
-      else
-         txt = v
-      end
-      local width = WindowTextWidth(win, font, txt, utf8)
+   for i,styles in ipairs(title_lines) do
+      local text_width = StylesWidth (win, font, nil, styles, false, utf8)
 
-      local text_left = (WindowInfo(win, 3) - width) / 2  -- default text align center
-      if text_alignment == "left" then
-         text_left = TITLE_PADDING + 2
-      elseif text_alignment == "right" then
-         text_left = WindowInfo(win, 3) - width - TITLE_PADDING
+      title_leftpadding = title_leftpadding or 0
+      local text_left = math.max(TITLE_PADDING + l + title_leftpadding, (WindowInfo(win, 3) - text_width) / 2)  -- default text align center
+      if title_alignment == "left" then
+         text_left = TITLE_PADDING + l + title_leftpadding
+      elseif title_alignment == "right" then
+         text_left = WindowInfo(win, 3) - text_width - TITLE_PADDING
       end
-      local text_right = math.min(text_left + width, WindowInfo(win, 3) - TITLE_PADDING - 2)
+      local text_right = WindowInfo(win, 3) - TITLE_PADDING
 
-      local text_top = (line_height * (i-1)) + TITLE_PADDING
-      if type(v) == "string" then
-         WindowText(win, font, v, text_left, text_top, text_right, title_height, THREE_D_SURFACE_DETAIL, utf8)
-      else
-         -- The colors of all styles matching the first style color get stripped out and replaced with the default title color
-         for i,w in ipairs(v) do
-            first_color = first_color or w.textcolour
-            if w.textcolour == first_color then
-               w.textcolour = THREE_D_SURFACE_DETAIL
-            end
-         end
-         WindowTextFromStyles(win, font, v, text_left, text_top, text_right, title_height, utf8)
-      end
+      local text_top = (title_line_height * (i-1)) + TITLE_PADDING
+      WindowTextFromStyles(win, font, styles, text_left, text_top, text_right, title_height, utf8)
    end
-   return title_height
+   return title_height+1
+end
+
+function BorderMetrics(win)
+   return 2, 2, WindowInfo(win, 3)-3, WindowInfo(win, 4)-3
 end
 
 function DrawBorder(win)
-   local r = WindowInfo(win, 3)-3
-   local b = WindowInfo(win, 4)-3
    WindowRectOp(win, 1, 0, 0, 0, 0, THREE_D_HIGHLIGHT)
    WindowRectOp(win, 1, 1, 1, -1, -1, THREE_D_SOFTSHADOW)
-   return 2, 2, r, b
+   return BorderMetrics(win)
 end
 
 function OutlinedText(win, font, text, startx, starty, endx, endy, color, outline_color, utf8, thickness)
@@ -375,7 +459,7 @@ function OutlinedText(win, font, text, startx, starty, endx, endy, color, outlin
          right = WindowText(win, font, text, startx+xi, starty+yi, endx+1, endy+1, outline_color, utf8)
       end
    end
-   local right = WindowText(win, font, text, startx+1, starty+1, endx, endy, outline_color, utf8)
+   -- local right = WindowText(win, font, text, startx+1, starty+1, endx, endy, outline_color, utf8)
    WindowText(win, font, text, startx, starty, endx, endy, color, utf8)
    return right
 end
@@ -395,7 +479,7 @@ function OutlinedTextFromStyles(win, font, styles, startx, starty, endx, endy, o
    if outline_color == nil then
       outline_color = THREE_D_HARDSHADOW
    end
-   local text = styles
+   local text = strip_colours_from_styles(styles)
    local right = nil
    for xi = -thickness,thickness do
       for yi = -thickness,thickness do
@@ -429,9 +513,9 @@ function Popup(win,   -- window name to use
    -- calculate remaining width and height
    for _, v in ipairs (info) do
       if type(v) == "table" then
-         txt = v
+         txt = strip_colours_from_styles(v)
       else
-         txt = v
+         txt = strip_colours(v)
       end
       infowidth  = math.max (infowidth, WindowTextWidth (win, font_id, txt))
       infoheight = infoheight + font_height
@@ -499,5 +583,4 @@ function Popup(win,   -- window name to use
 
    -- display popup window
    WindowShow(win, true)
-
 end -- popup

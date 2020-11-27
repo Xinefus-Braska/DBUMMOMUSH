@@ -6,7 +6,7 @@
 -- And then I ripped out its heart in a complete refactor. -- Fiendish
 
 -- functions for handling Aardwolf color codes
-dofile (GetPluginInfo(GetPluginID(), 20).."aardwolf_colors.lua")
+dofile (GetPluginInfo(GetPluginID(), 20).."DBUMMO_colors.lua")
 
 function get_selection_with_color()
    -- find selection in output window, if any
