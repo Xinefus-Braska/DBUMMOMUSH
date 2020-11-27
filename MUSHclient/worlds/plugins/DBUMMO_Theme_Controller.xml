@@ -2,7 +2,7 @@
 <!DOCTYPE muclient>
 <muclient>
 <plugin
-   name="Aardwolf_Theme_Controller"
+   name="DBUMMO_Theme_Controller"
    author="Fiendish"
    id="b9315e040989d3f81f4328d6"
    language="Lua"
@@ -10,13 +10,23 @@
    requires="5.05"
    save_state="y"
 >
+<!--
+
+Thanks to Fiendish of Aardwolf who provided the base and starting point for all of this.
+Original files sourced from: https://github.com/fiendish/aardwolfclientpackage
+My process: http://www.gammon.com.au/forum/?id=14718
+Thank you!!
+
+My Github for DBNU: https://github.com/DBNU-Braska/DBNU
+
+-->
 </plugin>
 
 <aliases>
 
 <alias
    script="choose_theme"
-   match="aard theme change"
+   match="DBUMMO theme change"
    enabled="y"
    sequence="100"
    ignore_case="y"
@@ -27,7 +37,7 @@
 <script>
 <![CDATA[
 
-require "mw_theme_base"
+dofile(GetPluginInfo(GetPluginID(), 20) .. "mw_theme_base.lua")
 
 theme_file = GetVariable("theme_file") or Theme.theme_file
 SetVariable("theme_file", theme_file)
@@ -36,11 +46,7 @@ function list_themes()
    t, e = utils.readdir(Theme.theme_dir.."*.lua")
    local res = {}
    for filename,v in pairs(t) do
-      if Theme.theme_has_bad_sha(filename) then
-         os.remove(Theme.theme_dir..filename)
-      else
-         res[filename] = filename:gsub("%.lua", ""):gsub("_", " ")
-      end
+      res[filename] = filename:gsub("%.lua", ""):gsub("_", " ")
    end
    return res
 end

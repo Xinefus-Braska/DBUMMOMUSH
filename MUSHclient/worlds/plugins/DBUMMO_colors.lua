@@ -1,4 +1,14 @@
-require "string_split"
+--[[
+
+Thanks to Fiendish of Aardwolf who provided the base and starting point for all of this.
+Original files sourced from: https://github.com/fiendish/aardwolfclientpackage
+My process: http://www.gammon.com.au/forum/?id=14718
+Thank you!!
+
+My Github for DBNU: https://github.com/DBNU-Braska/DBNU
+
+--]]
+
 
 local BLACK = 1
 local RED = 2
@@ -9,26 +19,27 @@ local MAGENTA = 6
 local CYAN = 7
 local WHITE = 8
 
-CODE_PREFIX = "@"
-PREFIX_ESCAPE = "@@"
+CODE_PREFIX = "&"
+PREFIX_ESCAPE = "&&"
 
-XTERM_CHAR = "x"
+XTERM_CHAR = "`"
+XTERM_EXCAPE = "``"
 
-BLACK_CHAR = "k"
+BLACK_CHAR = "x"
 RED_CHAR = "r"
 GREEN_CHAR = "g"
-YELLOW_CHAR = "y"
+YELLOW_CHAR = "O"
 BLUE_CHAR = "b"
-MAGENTA_CHAR = "m"
+MAGENTA_CHAR = "p"
 CYAN_CHAR = "c"
 WHITE_CHAR = "w"
 
-BOLD_BLACK_CHAR = "D"
+BOLD_BLACK_CHAR = "z"
 BOLD_RED_CHAR = "R"
 BOLD_GREEN_CHAR = "G"
 BOLD_YELLOW_CHAR = "Y"
 BOLD_BLUE_CHAR = "B"
-BOLD_MAGENTA_CHAR = "M"
+BOLD_MAGENTA_CHAR = "P"
 BOLD_CYAN_CHAR = "C"
 BOLD_WHITE_CHAR = "W"
 
@@ -36,7 +47,7 @@ NORMAL_CHARS = RED_CHAR..GREEN_CHAR..YELLOW_CHAR..BLUE_CHAR..MAGENTA_CHAR..CYAN_
 BOLD_CHARS = BOLD_BLACK_CHAR..BOLD_RED_CHAR..BOLD_GREEN_CHAR..BOLD_YELLOW_CHAR..BOLD_BLUE_CHAR..BOLD_MAGENTA_CHAR..BOLD_CYAN_CHAR..BOLD_WHITE_CHAR
 ALL_CHARS = XTERM_CHAR..NORMAL_CHARS..BOLD_CHARS
 
-XTERM_CODE = CODE_PREFIX..XTERM_CHAR
+XTERM_CODE = XTERM_CHAR
 
 BLACK_CODE = CODE_PREFIX..BLACK_CHAR
 RED_CODE = CODE_PREFIX..RED_CHAR
@@ -56,13 +67,13 @@ BOLD_MAGENTA_CODE = CODE_PREFIX..BOLD_MAGENTA_CHAR
 BOLD_CYAN_CODE = CODE_PREFIX..BOLD_CYAN_CHAR
 BOLD_WHITE_CODE = CODE_PREFIX..BOLD_WHITE_CHAR
 
-TILDE_PATTERN = CODE_PREFIX.."%-"
-X_NONNUMERIC_PATTERN = XTERM_CODE.."([^%d])"
+TILDE_PATTERN = "~"
+X_NONNUMERIC_PATTERN = XTERM_CODE.."([^%D])"
 X_THREEHUNDRED_PATTERN = XTERM_CODE.."[3-9]%d%d"
 X_TWOSIXTY_PATTERN = XTERM_CODE.."2[6-9]%d"
 X_TWOFIFTYSIX_PATTERN = XTERM_CODE.."25[6-9]"
-X_DIGITS_CAPTURE_PATTERN = XTERM_CODE.."(%d%d?%d?)"
-X_ANY_DIGITS_PATTERN = XTERM_CODE.."%d?%d?%d?"
+X_DIGITS_CAPTURE_PATTERN = XTERM_CODE.."([%D%d?%d?%d?])"
+X_ANY_DIGITS_PATTERN = XTERM_CODE.."[%D%d?%d?%d?]"
 
 ALL_CODES_PATTERN = CODE_PREFIX.."."
 HIDDEN_GARBAGE_PATTERN = CODE_PREFIX.."[^"..ALL_CHARS.."]"
@@ -127,14 +138,14 @@ for k,v in pairs(first_15_to_code) do
    code_to_xterm[v] = string.format(X3DIGIT_FORMAT, k)
 end
 
-local is_bold_code = {
+local bold_codes = {
    [BOLD_BLACK_CODE]=true, [BOLD_RED_CODE]=true, [BOLD_GREEN_CODE]=true, [BOLD_YELLOW_CODE]=true, [BOLD_BLUE_CODE]=true,
    [BOLD_MAGENTA_CODE]=true, [BOLD_CYAN_CODE]=true, [BOLD_WHITE_CODE]=true
 }
 for i = 9,15 do
-   is_bold_code[string.format(X3DIGIT_FORMAT,i)] = true
-   is_bold_code[string.format(X2DIGIT_FORMAT,i)] = true
-   is_bold_code[string.format(X1DIGIT_FORMAT,i)] = true
+   bold_codes[string.format(X3DIGIT_FORMAT,i)] = true
+   bold_codes[string.format(X2DIGIT_FORMAT,i)] = true
+   bold_codes[string.format(X1DIGIT_FORMAT,i)] = true
 end
 
 
@@ -238,12 +249,12 @@ function StylesToColours (styles, dollarC_resets)
    local lastcode = ""
    for i,style in ipairs(styles) do
       local bold = style.bold or (style.style and ((style.style % 2) == 1))
-      local text = string.gsub(style.text, CODE_PREFIX, PREFIX_ESCAPE)
+      local text = style.text --string.gsub(style.text, CODE_PREFIX, PREFIX_ESCAPE)
       local textcolor = style.textcolour
       local code = style.fromx
-                   or bold and client_color_to_bold_code[textcolor]
-                   or client_color_to_dim_code[textcolor]
-                   or client_color_to_xterm_code[textcolor]
+                   --or bold and client_color_to_bold_code[textcolor]
+                   --or client_color_to_dim_code[textcolor]
+                   --or client_color_to_xterm_code[textcolor]
 
       if code and (lastcode ~= code) then
          table.insert(line, code)
@@ -260,15 +271,15 @@ end
 
 require "copytable"
 function TruncateStyles (styles, startcol, endcol)
-   if (styles == nil) or (styles[1] == nil) then
-      return styles
+   if not styles or #styles == 0 then
+      return nil
    end
 
    local startcol = startcol or 1
    local endcol = endcol or 99999 -- 99999 is assumed to be long enough to cover ANY style run
 
    -- negative column indices are used to measure back from the end
-   if (startcol < 0) or (endcol < 0) then
+   if startcol < 0 or endcol < 0 then
       local total_chars = 0
       for k,v in ipairs(styles) do
          total_chars = total_chars + v.length
@@ -287,7 +298,7 @@ function TruncateStyles (styles, startcol, endcol)
    end
 
    -- Trim to start and end positions in styles
-   local found_first = false
+   local first_style = 0 -- not 1 because we check for foundness
    local col_counter = 0
    local new_styles = {}
    local break_after = false
@@ -295,17 +306,15 @@ function TruncateStyles (styles, startcol, endcol)
       local new_style = copytable.shallow(v)
       col_counter = col_counter + new_style.length
       if endcol <= col_counter then
-         local marker = endcol - (col_counter - v.length)
-         new_style.text = new_style.text:sub(1, marker)
-         new_style.length = marker
+         new_style.text = new_style.text:sub(1, endcol - (col_counter - v.length))
+         new_style.length = #(new_style.text)
          break_after = true
       end
       if startcol <= col_counter then
-         if not found_first then
-            local marker = startcol - (col_counter - v.length)
-            found_first = true
-            new_style.text = new_style.text:sub(marker)
-            new_style.length = new_style.length - marker
+         if first_style == 0 then
+            first_style = k
+            new_style.text = new_style.text:sub(startcol - (col_counter - v.length))
+            new_style.length = #(new_style.text)
          end
          table.insert(new_styles, new_style)
       end
@@ -315,157 +324,95 @@ function TruncateStyles (styles, startcol, endcol)
    return new_styles
 end
 
-function StylesWidth (win, plain_font, bold_font, styles, show_bold, utf8)
-   local width = 0
-   for i,v in ipairs(styles) do
-      local font = plain_font
-      if show_bold and v.bold and bold_font then
-         font = bold_font
-      end
-      width = width + WindowTextWidth(win, font, v.text, utf8)
-   end
-   return width
-end
 
-
--- Converts text with colour codes in it into a line of style runs or multiple
--- lines of style runs split at newlines if multiline is true.
--- default_foreground_color and background_color can be Aardwolf color codes or MUSHclient's raw numeric color values
--- dollarC_resets is a boolean determining whether "$C" in the input text will behave like the default foreground color
-function ColoursToStyles (input, default_foreground_color, background_color, multiline, dollarC_resets)
+-- Converts text with colour codes in it into style runs
+function ColoursToStyles (input, default_foreground_code, default_background_code)
    init_basic_to_color()
-
-   local default_foreground_code = nil
-   if default_foreground_color == nil then
-      default_foreground_color = code_to_client_color[WHITE_CODE]
+   if default_foreground_code and default_foreground_code:sub(1,1) ~= CODE_PREFIX then
+      default_foreground_code = CODE_PREFIX..default_foreground_code
+   end
+   if default_background_code and default_background_code:sub(1,1) ~= CODE_PREFIX then
+      default_background_code = CODE_PREFIX..default_background_code
+   end
+   local default_bold = false
+   local default_foreground = code_to_client_color[default_foreground_code] or x_to_client_color[default_foreground_code]
+   if not default_foreground then
+      default_foreground = code_to_client_color[WHITE_CODE]
       default_foreground_code = WHITE_CODE
-   elseif type(default_foreground_color) == "string" then
-      default_foreground_code = default_foreground_color
-      if default_foreground_code:sub(1,1) ~= CODE_PREFIX then
-         default_foreground_code = CODE_PREFIX..default_foreground_code
-      end
-      default_foreground_color = code_to_client_color[default_foreground_code] or x_to_client_color[default_foreground_code]
-      assert(default_foreground_color, "Invalid default_foreground_color setting. Codes must correspond to one of the available color codes.")
-   elseif type(default_foreground_color) == "number" then
-      default_foreground_code = client_color_to_xterm_code[default_foreground_color]
-   end
-
-   if background_color == nil then
-      background_color = default_black
-   elseif type(background_color) == "string" then
-      if background_color:sub(1,1) ~= CODE_PREFIX then
-         background_color = CODE_PREFIX..background_color
-      end
-      background_color = code_to_client_color[background_color] or x_to_client_color[background_color]
-      assert(background_color, "Invalid background_color setting. Codes must correspond to one of the available color codes.")
-   end
-
-   if multiline then
-      input = utils.split(input, "\n")
    else
-      input = {input}
+      default_bold = bold_codes[default_foreground_code] or false
+      default_foreground_code = default_foreground_code
    end
-   local color = default_foreground_color
-   local code = default_foreground_code
-   local all_styles = {}
-   for _, section in ipairs(input) do
-      if section:find(CODE_PREFIX, nil, true) then
-         local styles = {}
-
-         section = section:gsub(PREFIX_ESCAPE, "\0") -- change @@ to 0x00
-         section = section:gsub(TILDE_PATTERN, "~") -- fix tildes (historical)
-         section = section:gsub(X_NONNUMERIC_PATTERN,"%1") -- strip invalid xterm codes (non-number)
-         section = section:gsub(X_THREEHUNDRED_PATTERN,"") -- strip invalid xterm codes (300+)
-         section = section:gsub(X_TWOSIXTY_PATTERN,"") -- strip invalid xterm codes (260+)
-         section = section:gsub(X_TWOFIFTYSIX_PATTERN,"") -- strip invalid xterm codes (256+)
-         section = section:gsub(HIDDEN_GARBAGE_PATTERN, "")  -- strip hidden garbage
-
-         local tokens = section:split(ALL_CODES_PATTERN, true)
-
-         local num_tokens = #tokens
-         local first_i = 1
-         if tokens[1] == "" then 
-            if num_tokens > 2 then
-               first_i = 2
-            end
-         else
-            tokens[0] = ""
-            first_i = 0
-         end
-
-         for i=first_i,num_tokens do
-            local v = tokens[i]
-            if i % 2 == 0 then -- color code
-               code = v
-            else
-               local from_x = nil
-               local num = nil
-               local text = v:gsub("%z", CODE_PREFIX) -- put any @ characters back
-               if code == XTERM_CODE then -- xterm 256 colors
-                  num, text = text:match("(%d%d?%d?)(.*)")
-                  code = code..num
-
-                  -- Aardwolf treats x1...x15 as normal ANSI colors.
-                  -- That behavior does not match MUSHclient's.
-                  num = tonumber(num)
-                  from_x = code
-                  if num <= 15 then
-                     color = code_to_client_color[first_15_to_code[num]]
-                  else
-                     color = x_to_client_color[code]
-                  end
-               else
-                  color = code_to_client_color[code]
-               end
-
-               if dollarC_resets then
-                  for i, v in ipairs(text:split("%$C")) do
-                     table.insert(styles,
-                     {
-                        fromx = from_x,
-                        text = v,
-                        bold = is_bold_code[code] or false,
-                        length = #v,
-                        textcolour = (i == 1) and color or default_foreground_color,
-                        backcolour = background_color
-                     })
-                  end
-               else
-                  table.insert(styles,
-                  {
-                     fromx = from_x,
-                     text = text,
-                     bold = is_bold_code[code] or false,
-                     length = #text,
-                     textcolour = color or default_foreground_color,
-                     backcolour = background_color
-                  })
-               end
-            end
-         end
-         table.insert(all_styles, styles)
-      else
-         -- No colour codes, create a single style.
-         table.insert(all_styles, {{
-            text = section,
-            bold = is_bold_code[code] or false,
-            length = #section,
-            textcolour = color or default_foreground_color,
-            backcolour = background_color
-         }})
-      end
+   local default_background = code_to_client_color[default_background_code] or x_to_client_color[default_background_code]
+   if not default_background then
+      default_background = default_black
    end
-   if multiline then
-      return all_styles
-   else
-      return all_styles[1]
-   end
+
+--   if input:find(CODE_PREFIX, nil, true) then
+--      local astyles = {}
+
+      -- make sure we start with a color
+--      if input:sub(1, 1) ~= CODE_PREFIX then
+--         input = default_foreground_code .. input
+--      end -- if
+
+      input = input:gsub(PREFIX_ESCAPE, "\0") -- change @@ to 0x00
+      input = input:gsub(TILDE_PATTERN, "~") -- fix tildes (historical)
+      --input = input:gsub(X_NONNUMERIC_PATTERN,"%1") -- strip invalid xterm codes (non-number)
+      --input = input:gsub(X_THREEHUNDRED_PATTERN,"") -- strip invalid xterm codes (300+)
+      --input = input:gsub(X_TWOSIXTY_PATTERN,"") -- strip invalid xterm codes (260+)
+      --input = input:gsub(X_TWOFIFTYSIX_PATTERN,"") -- strip invalid xterm codes (256+)
+      --input = input:gsub(HIDDEN_GARBAGE_PATTERN, "")  -- strip hidden garbage
+
+--      for code, text in input:gmatch(CODE_REST_CAPTURE_PATTERN) do
+--         local from_x = nil
+--         text = text:gsub("%z", CODE_PREFIX) -- put any @ characters back
+
+--         if code == XTERM_CODE then -- xterm 256 colors
+--            num,text = text:match("(%d%d?%d?)(.*)")
+--            code = code..num
+            -- Aardwolf treats x1...x15 as normal ANSI colors.
+            -- That behavior does not match MUSHclient's.
+--            num = tonumber(num)
+--            from_x = code
+--            if num <= 15 then
+--               textcolor = code_to_client_color[first_15_to_code[num]]
+--            else
+--               textcolor = x_to_client_color[code]
+--            end
+--         else
+--            textcolor = code_to_client_color[code]
+--         end
+
+--         table.insert(astyles,
+--         {
+--            fromx = from_x,
+--            text = text,
+--            bold = bold_codes[code] or false,
+--            length = #text,
+--            textcolour = textcolor or default_foreground,
+--            backcolour = default_background
+--         })
+--      end -- for each colour run.
+
+--      return astyles
+--   end -- if any colour codes at all
+
+   -- No colour codes, create a single style.
+   return {{
+      text = input,
+      bold = default_bold,
+      length = #input,
+      textcolour = default_foreground,
+      backcolour = default_background
+   }}
 end  -- function ColoursToStyles
 
 
 -- Strip all color codes from a string
 function strip_colours (s)
    s = s:gsub(PREFIX_ESCAPE, "\0")  -- change @@ to 0x00
+   --s = s:gsub(XTERM_ESCAPE, "\0")  -- change `` to 0x00
    s = s:gsub(TILDE_PATTERN, "~")    -- fix tildes (historical)
    s = s:gsub(X_ANY_DIGITS_PATTERN, "") -- strip valid and invalid xterm color codes
    s = s:gsub(ALL_CODES_PATTERN, "") -- strip normal color codes and hidden garbage
@@ -575,7 +522,7 @@ function AnsiToColours (ansi, default_foreground_code)
             bold = true
             xstage = 0
          elseif nc == 0 then
-            bold = is_bold_code[default_foreground_code] or false
+            bold = bold_codes[default_foreground_code] or false
             -- not actually sure if we should set color here or not
             color = default_foreground_code
          elseif nc <= 37 and nc >= 30 then -- regular color
@@ -598,6 +545,7 @@ function ColoursToANSI (text)
    -- return stylesToANSI(ColoursToStyles(text))
    if text:find(CODE_PREFIX, nil, true) then
       text = text:gsub(PREFIX_ESCAPE, "\0") -- change @@ to 0x00
+      text = text:gsub(XTERM_ESCAPE, "\0")  -- change `` to 0x00
       text = text:gsub(TILDE_PATTERN, "~") -- fix tildes (historical)
       text = text:gsub(X_NONNUMERIC_PATTERN,"%1") -- strip invalid xterm codes (non-number)
       text = text:gsub(X_THREEHUNDRED_PATTERN,"") -- strip invalid xterm codes (300+)

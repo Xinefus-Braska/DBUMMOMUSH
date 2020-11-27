@@ -19,9 +19,12 @@
 <script>
 <![CDATA[
 
-require "mw_theme_base"
-require "text_rect"
-require "color_copy"
+--require "mw_theme_base"
+dofile(GetPluginInfo(GetPluginID(), 20) .. "mw_theme_base.lua")
+dofile(GetPluginInfo(GetPluginID(), 20) .. "text_rect.lua")
+dofile(GetPluginInfo(GetPluginID(), 20) .. "color_copy.lua")
+--require "text_rect"
+--require "color_copy"
 
 if not utils.getfontfamilies().Dina then
     AddFont(GetInfo(66).."Dina.fon")
@@ -65,7 +68,7 @@ function OnPluginEnable()
    title_height = 6
    WindowShow(win, false)
    check_display()
-   
+
    AcceleratorTo("PageUp", "pageUp()", sendto.script)
    AcceleratorTo("PageDown", "pageDown()", sendto.script)
 end
@@ -82,10 +85,9 @@ function OnPluginScreendraw(type, log, line)
    if rect then
       new_num_lines = GetLinesInBufferCount()
       for i=num_lines,new_num_lines do
-         rect:addText(GetStyleInfo(i))
+         rect:addStyles(GetStyleInfo(i))
       end
       rect:draw()
-      CallPlugin("abc1a0944ae4af7586ce88dc", "BufferedRepaint")
       num_lines = new_num_lines+1
    else
       check_display()
@@ -111,20 +113,35 @@ function OnPluginSelectionChanged()
       end
       csl, cel, csp, cep = new_csl, new_cel, new_csp, new_cep
       if (csl ~= cel) or (csp ~= cep) then
-         rect:set_selection(
-            rect.rect_lines - (num_lines - 1 - csl),
-            rect.rect_lines - (num_lines - 1 - cel),
-            csp-1, cep-1
-         )
+         local sstxt = GetLineInfo(csl, 1):sub(1, csp - 1)
+         local setxt = GetLineInfo(cel, 1):sub(1, cep - 1)
+         local csx = WindowTextWidth(rect.window, rect.font, sstxt) + rect.padded_left
+         local cex = WindowTextWidth(rect.window, rect.font, setxt) + rect.padded_left + 1
+         local cptxt = ""
+         rect.start_copying_x = csx
+         rect.end_copying_x = cex
+         rect.start_copying_pos = csp
+         rect.end_copying_pos = cep
+         rect.copy_start_line = rect.rect_lines - (num_lines - 1 - csl)
+         rect.copy_end_line = rect.rect_lines - (num_lines - 1 - cel)
+         rect.copied_text = cptxt
          rect:draw()
-         CallPlugin("abc1a0944ae4af7586ce88dc", "BufferedRepaint")
       elseif ((csl == 0) and (cel == 0) and (csp == 0) and (cep == 0)) then
-         rect:set_selection(nil, nil, nil, nil)
+         rect.start_copying_x = nil
+         rect.end_copying_x = nil
+         rect.start_copying_pos = nil
+         rect.end_copying_pos = nil
+         rect.copy_start_line = nil
+         rect.copy_end_line = nil
+         rect.copied_text = ""
          rect:draw()
-         CallPlugin("abc1a0944ae4af7586ce88dc", "BufferedRepaint")
       end
    else
-      if (new_csl == 0) and (new_cel == 0) and (new_csp == 0) and (new_cep == 0) then
+      if (new_csl == 0)
+         and (new_cel == 0)
+         and (new_csp == 0)
+         and (new_cep == 0)
+      then
          Pause(false)
       end
    end
@@ -141,7 +158,7 @@ function select_in_main(start_line, end_line, start_pos, end_pos, start_x, end_x
    else
       start_line, end_line, start_pos, end_pos = 1, 1, 1, 1
    end
-   SetSelection(start_line, end_line, start_pos+1, end_pos+1)
+   SetSelection(start_line, end_line, start_pos, end_pos)
 end
 
 function check_display()
@@ -177,8 +194,8 @@ function check_display()
          local bottom = GetInfo(293) + border_offset + border_width
          local width = right - left
          local output_font = GetAlphaOption("output_font_name")
-         local output_font_size = GetOption("output_font_height")  -- output_font_height is actually the pt size
-         local height = (font_height * desired_lines) + border_offset + (2*border_width) + text_offset + title_height + 1
+         local output_font_size = GetOption("output_font_height")
+         local height = (font_height * desired_lines) + border_offset + (2*border_width) + text_offset + title_height
          local top = bottom - height
          if (
             (not WindowInfo(win, 5))
@@ -200,6 +217,18 @@ function check_display()
             local l, t, r, b = Theme.DrawBorder(win)
             Theme.Draw3DRect(win, -1, 1, 0, title_height)
             t = title_height
+            local carry = false
+            local csl, cel, csx, cex, cptxt = nil, nil, nil, nil, nil
+            if rect and rect.copy_start_line then
+               carry = true
+               csl = num_lines - rect.rect_lines - 1 + rect.copy_start_line
+               cel = num_lines - rect.rect_lines - 1 + rect.copy_end_line
+               csx = rect.start_copying_x
+               cex = rect.end_copying_x
+               csp = rect.start_copying_pos
+               cep = rect.end_copying_pos
+               cptxt = rect.copied_text
+            end
             if rect then
                rect:unInit()
                rect = nil
@@ -210,25 +239,35 @@ function check_display()
                t + border_width,
                r - border_offset + border_width,
                b - text_offset - border_offset + border_width,
-               desired_lines, false, Theme.PRIMARY_BODY, 0,
-               output_font, output_font_size,
+               desired_lines, false, bgcolor, 0,
+               output_font, output_font_size,  -- output_font_height is actually the pt size
                'ScrollMain',
                select_in_main
             )
-            for i=math.min(num_lines-1, rect.rect_lines),1,-1 do
-               rect:addText(GetStyleInfo(num_lines - i))
-            end
             local wsl = GetSelectionStartLine()
             if wsl ~= 0 then
+               carry = true
                csl = wsl
                cel = GetSelectionEndLine()
                csp = GetSelectionStartColumn()
                cep = GetSelectionEndColumn()
-               rect:set_selection(
-                  rect.rect_lines - (num_lines - 1 - csl),
-                  rect.rect_lines - (num_lines - 1 - cel),
-                  csp-1, cep-1
-               )
+               sstxt = GetLineInfo(csl, 1):sub(1, csp - 1)
+               setxt = GetLineInfo(cel, 1):sub(1, cep - 1)
+               csx = WindowTextWidth(rect.window, rect.font, sstxt) + rect.padded_left
+               cex = WindowTextWidth(rect.window, rect.font, setxt) + rect.padded_left + 1
+               cptxt = ""
+            end
+            for i=math.min(num_lines-1, rect.rect_lines),1,-1 do
+               rect:addStyles(GetStyleInfo(num_lines - i))
+            end
+            if carry then
+               rect.start_copying_x = csx
+               rect.end_copying_x = cex
+               rect.start_copying_pos = csp
+               rect.end_copying_pos = cep
+               rect.copy_start_line = rect.rect_lines - (num_lines - 1 - csl)
+               rect.copy_end_line = rect.rect_lines - (num_lines - 1 - cel)
+               rect.copied_text = cptxt
             end
             rect:draw()
             WindowMoveHotspot(win, 'bar', 0, 0, 0, t)
@@ -290,12 +329,6 @@ function ScrollMain(flags, hotspot_id)
       direction = -1  -- wheel scrolled up
    end
    SetScroll(GetInfo(296) + delta*direction, GetInfo(120))
-end
-
-function OnPluginTrace (line)
-   if not line:find("OnPluginScreendraw") then
-      print("TRACE:", line)
-   end
 end
 
 ]]>
