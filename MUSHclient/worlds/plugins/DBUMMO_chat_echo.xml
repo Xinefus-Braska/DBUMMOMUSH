@@ -4,7 +4,7 @@
 <muclient>
 <plugin
    name="DBUMMO_Chat_Echo"
-   author="Fiendish"
+   author="Braska"
    id="55616ea13339bc68e963e1f8"
    language="Lua"
    purpose="Control whether certain channels get hidden from main output"
@@ -20,7 +20,7 @@
 
 Thanks to Fiendish of Aardwolf who provided the base and starting point for all of this.
 Original files sourced from: https://github.com/fiendish/aardwolfclientpackage
-My process: http://www.gammon.com.au/forum/?id=14718
+
 Thank you!!
 
 My Github : https://github.com/Xinefus-Braska
@@ -377,7 +377,7 @@ local init_nonchannel_pairs = {["Auction_House"]="DBNU Auction House", ["Auto_Ev
 local init_channel_keys = {"Ask_Answer", "Clan", "FriendChat", "IMM", "Music", "Newbie", "OOC", "Race", "RP_Chat", "say", "say_get", "Scouter", "Wartalk", "Yell"}
 local init_channel_pairs = {["Ask_Answer"]="Ask_Answer", ["Clan"]="Clan", ["FriendChat"]="FriendChat", ["IMM"]="IMM", ["Music"]="Music", ["Newbie"]="Newbie", ["OOC"]="OOC", ["Race"]="Race", ["RP_Chat"]="RP_Chat", ["say"]="say", ["say_get"]="say_get", ["Scouter"]="Scouter", ["Wartalk"]="Wartalk", ["Yell"]="Yell"}
 
-dofile(GetPluginInfo(GetPluginID(), 20) .. "DBUMMO_colors.lua")
+require "DBUMMO_colors"
 
 channels_table = {}
 nonchannels_table = {}
