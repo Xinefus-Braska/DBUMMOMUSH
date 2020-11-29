@@ -313,7 +313,7 @@ USAGE:
 <script>
 <![CDATA[
 
-require "register_z_on_create"
+--require "register_z_on_create"
 require "mw_theme_base"
 require "movewindow"
 require "text_rect"

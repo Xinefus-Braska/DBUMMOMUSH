@@ -15,7 +15,7 @@ My Github for DBNU: https://github.com/DBNU-Braska/DBNU
 require "wait"
 require "copytable"
 require "colors"
-dofile(GetPluginInfo(GetPluginID(), 20) .. "DBUMMO_colors.lua")
+require "DBUMMO_colors"
 
 local function getHighlightColor(bg)
    local h, s, l = colors.rgb_string_to_hsl(string.format('#%06x', bg))

@@ -30,7 +30,7 @@ My Github for DBNU: https://github.com/Xinefus-Braska
 
 require "checkplugin"
 require "movewindow"
-dofile(GetPluginInfo(GetPluginID(), 20) .. "DBUMMO_colors.lua")
+require "DBUMMO_colors"
 
 module ("Theme", package.seeall)
 
@@ -39,7 +39,7 @@ function b9315e040989d3f81f4328d6() -- Theme_controller
    return true
 end
 
-theme_dir = GetInfo(66).."worlds\\plugins\\DBU - MMO\\mw_themes\\"
+theme_dir = GetInfo(66).."lua\\mw_themes\\"
 theme_file = "Charcoal.lua"
 
 function get_theme()
