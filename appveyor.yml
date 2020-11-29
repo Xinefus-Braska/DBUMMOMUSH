@@ -1,2 +1,7 @@
 version: 1.0.{build}
+branches:
+  only:
+  - MUSHclient
+skip_tags: true
+skip_branch_with_pr: true
 build: off
