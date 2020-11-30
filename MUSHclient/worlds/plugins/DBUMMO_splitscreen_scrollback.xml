@@ -28,12 +28,9 @@
 <script>
 <![CDATA[
 
---require "mw_theme_base"
-dofile(GetPluginInfo(GetPluginID(), 20) .. "mw_theme_base.lua")
-dofile(GetPluginInfo(GetPluginID(), 20) .. "text_rect.lua")
-dofile(GetPluginInfo(GetPluginID(), 20) .. "color_copy.lua")
---require "text_rect"
---require "color_copy"
+require "mw_theme_base"
+require "text_rect"
+require "color_copy"
 
 if not utils.getfontfamilies().Dina then
     AddFont(GetInfo(66).."Dina.fon")

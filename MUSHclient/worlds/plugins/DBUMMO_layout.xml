@@ -18,7 +18,7 @@
 
 Thanks to Fiendish of Aardwolf who provided the base and starting point for all of this.
 Original files sourced from: https://github.com/fiendish/aardwolfclientpackage
-My process: http://www.gammon.com.au/forum/?id=14718
+
 Thank you!!
 
 My Github : https://github.com/Xinefus-Braska
@@ -60,8 +60,8 @@ My Github : https://github.com/Xinefus-Braska
 <script>
 <![CDATA[
 
-dofile(GetPluginInfo(GetPluginID(), 20) .. "mw_theme_base.lua")
-dofile(GetPluginInfo(GetPluginID(), 20) .. "scrollbar.lua")
+require "mw_theme_base"
+require "scrollbar"
 
 --function OnPluginListChanged()
 --   file(GetPluginInfo(GetPluginID(), 20) .. "DBUMMO_requirements.lua")

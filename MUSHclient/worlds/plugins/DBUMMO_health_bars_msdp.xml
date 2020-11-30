@@ -43,12 +43,12 @@ DBU - MMO MSDP based health bars
 
 <script>
 <![CDATA[
-dofile(GetPluginInfo(GetPluginID(), 20) .. "DBUMMO_register_z_on_create.lua")
+require "DBUMMO_register_z_on_create"
 
-dofile(GetPluginInfo(GetPluginID(), 20) .. "mw_theme_base.lua")
+require "mw_theme_base"
 require "movewindow"
 require "gauge"
-dofile(GetPluginInfo(GetPluginID(), 20) .. "MSDPHelper.lua")
+require "MSDPHelper"
 require "serialize"
 require "colors"
 require "commas"
@@ -83,7 +83,7 @@ hotspot_id = ""
 page_built = false
 
 -- functions for handling color codes
-dofile (GetPluginInfo (GetPluginID(), 20) .. "DBUMMO_colors.lua")
+require "DBUMMO_colors"
 
 string.lpad = function(str, len, char)
    str = tostring(str)
@@ -582,7 +582,7 @@ end -- OnPluginEnable
 win = GetPluginID()
 
 --function OnPluginListChanged()
---   dofile(GetPluginInfo(GetPluginID(), 20) .. "DBUMMO_requirements.lua")
+--   require "DBUMMO_requirements"
 --end
 
 function OnPluginWorldOutputResized()
