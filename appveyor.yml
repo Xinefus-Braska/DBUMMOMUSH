@@ -5,9 +5,9 @@ branches:
 skip_tags: true
 skip_branch_with_pr: true
 skip_branch_with_pr: true
-image: Visual Studio 2015
+image: Visual Studio 2019
 clone_depth: 1
 environment:
   auth_token:
-    secure: bcdef89aadf1e614862a5b1813eeb3764d51ce11
+    secure: 91a7da5075cc3e55272885c1413e94f70e7b2556
 build: off
