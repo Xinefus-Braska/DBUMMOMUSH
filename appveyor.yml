@@ -4,4 +4,10 @@ branches:
   - MUSHclient
 skip_tags: true
 skip_branch_with_pr: true
+skip_branch_with_pr: true
+image: Visual Studio 2015
+clone_depth: 1
+environment:
+  auth_token:
+    secure: /bcdef89aadf1e614862a5b1813eeb3764d51ce11
 build: off
