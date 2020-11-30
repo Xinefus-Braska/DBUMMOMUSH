@@ -45,12 +45,12 @@ DBU - MMO MSDP based stats monitor.
 <script>
 <![CDATA[
 
-dofile(GetPluginInfo(GetPluginID(), 20) .. "DBUMMO_register_z_on_create.lua")
-dofile(GetPluginInfo(GetPluginID(), 20) .. "mw_theme_base.lua")
+require "DBUMMO_register_z_on_create"
+require "mw_theme_base"
 require "serialize"
 require "movewindow"
 require "commas"
-dofile(GetPluginInfo(GetPluginID(), 20) .. "MSDPHelper.lua")
+require "MSDPHelper"
 require "copytable"
 
 default_width         = 250
@@ -73,7 +73,7 @@ page_built = false
 max_width  = 0
 
 -- functions for handling color codes
-dofile (GetPluginInfo (GetPluginID(), 20) .. "DBUMMO_colors.lua")
+require "DBUMMO_colors"
 
 color_indices = {"Strength","Intelligence","Wisdom","Dexterity","Constitution","Luck","Charisma",
                 "Align","Zeni","Boost","AC","RPP","TP","QP","SM","BP","Rage","Name","Root",
