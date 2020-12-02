@@ -1,4 +1,4 @@
-Aardwolf Client Package Major Changes List
+DBU-MMO Client Package Major Changes List
 
 r2121 snapshot
 - misc change: Add missing license files. Credit is important.
