@@ -1,6 +1,9 @@
 DBUMMO Client Package Major Changes List
 
-Beta1 
+Beta2
+- trying to get my own mcl put in... 
+
+Beta1
 - initial beta release (This stuff is hard!)
 - based off of r2121 of Aardwolf MUSHclient Package development project
 
