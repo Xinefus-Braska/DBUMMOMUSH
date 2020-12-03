@@ -1,7 +1,7 @@
 version: 1.0.{build}
 branches:
   only:
-  - MUSHclient
+  - DBUMUSH
 skip_tags: true
 skip_branch_with_pr: true
 image: Visual Studio 2019
@@ -65,6 +65,6 @@ deploy:
   artifact: /DBUMMO_MUSHclient_r.*\.(exe|zip)/
   force_update: true
   on:
-    branch: MUSHclient
+    branch: DBUMUSH
 after_deploy:
 - cmd:
