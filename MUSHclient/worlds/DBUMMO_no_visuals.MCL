@@ -10,6 +10,7 @@
    world_file_version="15"
    date_saved="2020-12-03 14:30:00"
 
+
    auto_say_override_prefix="-"
    auto_say_string="say "
    chat_name="Name-not-set"
@@ -111,6 +112,7 @@
    muclient_version="5.07-pre"
    world_file_version="15"
    date_saved="2020-12-03 14:30:00"
+
   >
 </triggers>
 
