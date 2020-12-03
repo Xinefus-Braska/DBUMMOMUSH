@@ -435,7 +435,7 @@ function OnPluginInstall()
    end
 
    if 0 ~= SetBackgroundImage(imgpath, 13) then
-      imgpath = dir.."worlds\\plugins\\DBU - MMO\\images\\bg1.png"
+      imgpath = dir.."worlds\\plugins\\images\\bg1.png"
       -- add some theme coloring to the background
       WindowCreate("WiLl_It_BlEnD", 0, 0, 0, 0, 0, 0, Theme.SECONDARY_BODY)
       WindowLoadImage("WiLl_It_BlEnD", "tExTuRe", imgpath)
@@ -446,7 +446,7 @@ function OnPluginInstall()
       WindowDrawImage("WiLl_It_BlEnD", "tExTuRe", 0, 0, 0, 0, 1)
       WindowBlendImage("WiLl_It_BlEnD", "cOlOr", 0, 0, 0, 0, 12, 0.3)
 
-      imgpath = dir.."worlds\\plugins\\DBU - MMO\\images\\temp_theme_blend.png"
+      imgpath = dir.."worlds\\plugins\\images\\temp_theme_blend.png"
       WindowWrite("WiLl_It_BlEnD", imgpath)
    end
 
@@ -458,7 +458,7 @@ function OnPluginInstall()
    WindowCreate (bgwin, 0, 0, 0, 0, 12, 3, bgcolor)
    WindowCreate (bgoffscreen, 0, 0, 0, 0, 12, 3, bgcolor)
 
-   local logopath = dir .. "worlds\\plugins\\DBU - MMO\\images\\dragonballs.png"
+   local logopath = dir .. "worlds\\plugins\\images\\dragonballs.png"
    if WindowLoadImage (bgoffscreen, "dball_logo", logopath) == 0 then
       WindowResize (bgoffscreen, WindowImageInfo(bgoffscreen, "dball_logo", 2), WindowImageInfo(bgoffscreen, "dball_logo", 3), bgcolor)
       WindowDrawImageAlpha (bgoffscreen, "dball_logo", 0, 0, 0, 0, Theme.LOGO_OPACITY)
