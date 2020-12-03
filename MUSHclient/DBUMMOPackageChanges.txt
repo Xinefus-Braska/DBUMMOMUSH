@@ -1,5 +1,9 @@
 DBUMMO Client Package Major Changes List
 
+Beta1 
+- initial beta release (This stuff is hard!)
+- based off of r2121 of Aardwolf MUSHclient Package development project
+
 Beta
 - initial beta release (This stuff is hard!)
 - based off of r2121 of Aardwolf MUSHclient Package development project
