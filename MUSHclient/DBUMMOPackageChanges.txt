@@ -1,4 +1,4 @@
-DBU-MMO Client Package Major Changes List
+DBUMMO Client Package Major Changes List
 
 r2121 snapshot
 - misc change: Add missing license files. Credit is important.
