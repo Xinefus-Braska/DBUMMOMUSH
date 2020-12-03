@@ -1,5 +1,22 @@
 DBUMMO Client Package Major Changes List
 
+<<<<<<< Updated upstream
+=======
+r102
+- auto-connect to DBUMMO on startup with all plugins active.
+- cleared state files
+
+r101
+- going to try and make this work
+
+Beta2
+- trying to get my own mcl put in...
+
+Beta1
+- initial beta release (This stuff is hard!)
+- based off of r2121 of Aardwolf MUSHclient Package development project
+
+>>>>>>> Stashed changes
 Beta
 - initial beta release (This stuff is hard!)
 - based off of r2121 of Aardwolf MUSHclient Package development project
