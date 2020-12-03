@@ -1,4 +1,4 @@
-Demon Client Package Major Changes List
+DBNU Client Package Major Changes List
 
 r1000 snapshot
--released new updater code 
+-released new updater code
