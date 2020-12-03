@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 <!DOCTYPE muclient>
-<!-- Saved on Thursday, December 03, 2020, 12:13 PM -->
+<!-- Saved on Thursday, December 03, 2020, 2:30 PM -->
 <!-- MuClient version 5.07-pre -->
 <!-- Written by Nick Gammon -->
 <!-- Home Page: http://www.mushclient.com/ -->
@@ -8,13 +8,14 @@
 <world
    muclient_version="5.07-pre"
    world_file_version="15"
-   date_saved="2020-12-03 12:13:05"
+   date_saved="2020-12-03 14:30:00"
+
 
    auto_say_override_prefix="-"
    auto_say_string="say "
    chat_name="Name-not-set"
    command_stack_character=";"
-   id="93b37aa0dba939b88bc03a25"
+   id="0aff5fb8c023d48065afd4cf"
    input_font_name="Courier New"
    mapping_failure="Alas, you cannot go that way."
    name="DBUMMO"
@@ -110,7 +111,8 @@
 <triggers
    muclient_version="5.07-pre"
    world_file_version="15"
-   date_saved="2020-12-03 12:13:05"
+   date_saved="2020-12-03 14:30:00"
+
   >
 </triggers>
 
@@ -119,7 +121,7 @@
 <aliases
    muclient_version="5.07-pre"
    world_file_version="15"
-   date_saved="2020-12-03 12:13:05"
+   date_saved="2020-12-03 14:30:00"
   >
 </aliases>
 
@@ -128,7 +130,7 @@
 <timers
    muclient_version="5.07-pre"
    world_file_version="15"
-   date_saved="2020-12-03 12:13:05"
+   date_saved="2020-12-03 14:30:00"
   >
 </timers>
 
@@ -137,7 +139,7 @@
 <macros
    muclient_version="5.07-pre"
    world_file_version="15"
-   date_saved="2020-12-03 12:13:05"
+   date_saved="2020-12-03 14:30:00"
   >
 
   <macro name="up" type="send_now" >
@@ -231,7 +233,7 @@
 <variables
    muclient_version="5.07-pre"
    world_file_version="15"
-   date_saved="2020-12-03 12:13:05"
+   date_saved="2020-12-03 14:30:00"
   >
 </variables>
 
@@ -240,7 +242,7 @@
 <colours
    muclient_version="5.07-pre"
    world_file_version="15"
-   date_saved="2020-12-03 12:13:05"
+   date_saved="2020-12-03 14:30:00"
   >
 
 <ansi>
@@ -297,7 +299,7 @@
 <keypad
    muclient_version="5.07-pre"
    world_file_version="15"
-   date_saved="2020-12-03 12:13:05"
+   date_saved="2020-12-03 14:30:00"
   >
 
   <key name="0" >
@@ -411,7 +413,7 @@
 <printing
    muclient_version="5.07-pre"
    world_file_version="15"
-   date_saved="2020-12-03 12:13:05"
+   date_saved="2020-12-03 14:30:00"
   >
 
 <ansi>

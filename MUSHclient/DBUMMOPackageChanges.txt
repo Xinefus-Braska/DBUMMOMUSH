@@ -1,5 +1,9 @@
 DBUMMO Client Package Major Changes List
 
+r102
+- auto-connect to DBUMMO on startup with all plugins active.
+- cleared state files
+
 r101
 - going to try and make this work
 
