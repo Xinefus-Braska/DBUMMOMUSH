@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE muclient>
+<!-- Saved on Thursday, December 03, 2020, 12:13 PM -->
+<!-- MuClient version 5.07-pre -->
+<!-- Written by Nick Gammon -->
+<!-- Home Page: http://www.mushclient.com/ -->
+
+<!-- Plugin state saved. Plugin: "DBUMMO_Health_Bars". World: "DBUMMO". -->
+
+<muclient>
+
+<!-- variables -->
+
+<variables
+   muclient_version="5.07-pre"
+   world_file_version="15"
+   date_saved="2020-12-03 12:13:05"
+  >
+  <variable name="enabled">true</variable>
+  <variable name="flat_gauges">0</variable>
+  <variable name="font_name">Consolas</variable>
+  <variable name="font_size">11</variable>
+  <variable name="graphicalMode">1</variable>
+  <variable name="mw_ef4a86dbc9cd4dd6f4c69385_windowx">0</variable>
+  <variable name="mw_ef4a86dbc9cd4dd6f4c69385_windowy">725</variable>
+  <variable name="overlay_numbers">1</variable>
+  <variable name="reverseTNL">1</variable>
+  <variable name="showBar">showBar = {}
+  showBar.Stamina = {}
+    showBar.Stamina[1] = "Stamina:"
+    showBar.Stamina[2] = true
+    showBar.Stamina[3] = "Stamina:"
+    showBar.Stamina[4] = 16776960
+    showBar.Stamina[5] = 13749760
+  showBar.Health = {}
+    showBar.Health[1] = "Health :"
+    showBar.Health[2] = true
+    showBar.Health[3] = "Health:"
+    showBar.Health[4] = 65280
+    showBar.Health[5] = 17408
+  showBar.Focus = {}
+    showBar.Focus[1] = "Focus  :"
+    showBar.Focus[2] = true
+    showBar.Focus[3] = "Focus:"
+    showBar.Focus[4] = 55295
+    showBar.Focus[5] = 65535
+  showBar.PL = {}
+    showBar.PL[1] = "PL     :"
+    showBar.PL[2] = true
+    showBar.PL[3] = "PL:"
+    showBar.PL[4] = 16777215
+    showBar.PL[5] = 4473924
+  showBar.Ki = {}
+    showBar.Ki[1] = "Ki     :"
+    showBar.Ki[2] = true
+    showBar.Ki[3] = "Ki:"
+    showBar.Ki[4] = 16733440
+    showBar.Ki[5] = 4465152</variable>
+  <variable name="showLabels">1</variable>
+  <variable name="stacked">0</variable>
+  <variable name="thresh1active">0</variable>
+  <variable name="thresh1color">65535</variable>
+  <variable name="thresh1percent">40</variable>
+  <variable name="thresh2active">0</variable>
+  <variable name="thresh2color">255</variable>
+  <variable name="thresh2percent">20</variable>
+  <variable name="width">1155</variable>
+</variables>
+</muclient>

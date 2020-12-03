@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE muclient>
+<!-- Saved on Thursday, December 03, 2020, 12:13 PM -->
+<!-- MuClient version 5.07-pre -->
+<!-- Written by Nick Gammon -->
+<!-- Home Page: http://www.mushclient.com/ -->
+
+<!-- Plugin state saved. Plugin: "DBUMMO_Chat_Echo". World: "DBUMMO". -->
+
+<muclient>
+
+<!-- variables -->
+
+<variables
+   muclient_version="5.07-pre"
+   world_file_version="15"
+   date_saved="2020-12-03 12:13:05"
+  >
+  <variable name="channels_table">channels_table = {}
+  channels_table.Race = {}
+    channels_table.Race.echo = true
+  channels_table.RP_Chat = {}
+    channels_table.RP_Chat.echo = true
+  channels_table.say = {}
+    channels_table.say.echo = true
+  channels_table.say_get = {}
+    channels_table.say_get.echo = true
+  channels_table.Scouter = {}
+    channels_table.Scouter.echo = true
+  channels_table.Wartalk = {}
+    channels_table.Wartalk.echo = true
+  channels_table.Yell = {}
+    channels_table.Yell.echo = true
+  channels_table.Ask_Answer = {}
+    channels_table.Ask_Answer.echo = true
+  channels_table.Clan = {}
+    channels_table.Clan.echo = true
+  channels_table.FriendChat = {}
+    channels_table.FriendChat.echo = true
+  channels_table.IMM = {}
+    channels_table.IMM.echo = true
+  channels_table.Music = {}
+    channels_table.Music.echo = true
+  channels_table.Newbie = {}
+    channels_table.Newbie.echo = true
+  channels_table.OOC = {}
+    channels_table.OOC.echo = true</variable>
+  <variable name="nonchannels_table">nonchannels_table = {}
+  nonchannels_table.Clan_Info = {}
+    nonchannels_table.Clan_Info.echo = true
+  nonchannels_table.Friend_Info = {}
+    nonchannels_table.Friend_Info.echo = true
+  nonchannels_table.Info = {}
+    nonchannels_table.Info.echo = true
+  nonchannels_table.Battle_Arena = {}
+    nonchannels_table.Battle_Arena.echo = true
+  nonchannels_table.HighScore = {}
+    nonchannels_table.HighScore.echo = true
+  nonchannels_table.IMM_Logs = {}
+    nonchannels_table.IMM_Logs.echo = true
+  nonchannels_table.News_Flash = {}
+    nonchannels_table.News_Flash.echo = true
+  nonchannels_table.RP_Story = {}
+    nonchannels_table.RP_Story.echo = true
+  nonchannels_table.Auction_House = {}
+    nonchannels_table.Auction_House.echo = true
+  nonchannels_table.Auto_Events = {}
+    nonchannels_table.Auto_Events.echo = true</variable>
+</variables>
+</muclient>
