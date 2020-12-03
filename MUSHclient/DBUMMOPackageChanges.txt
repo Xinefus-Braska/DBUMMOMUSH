@@ -1,7 +1,10 @@
 DBUMMO Client Package Major Changes List
 
+r101
+- going to try and make this work
+
 Beta2
-- trying to get my own mcl put in... 
+- trying to get my own mcl put in...
 
 Beta1
 - initial beta release (This stuff is hard!)
