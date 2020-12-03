@@ -1,4 +1,4 @@
-# DBU:MMO MUSHclient Package development project<br>[![Build status](https://ci.appveyor.com/api/projects/status/gs65yl9foxq61eea/branch/dev?svg=true)](https://ci.appveyor.com/project/Xinefus-Braska/dbummomush/branch/dev)
+# DBU:MMO MUSHclient Package development project<br>[![Build status](https://ci.appveyor.com/api/projects/status/gs65yl9foxq61eea/branch/DBUMUSH?svg=true)](https://ci.appveyor.com/project/Xinefus-Braska/dbummomush/branch/DBUMUSH)
 Get the latest DBU:MMO MUSHclient Package pre-release installer at <insert link here>
 
 Further help can be found in-game on the ask channel.
