@@ -28,14 +28,14 @@ install:
       Start-FileDownload 'https://raw.githubusercontent.com/Xinefus-Braska/dbummoclientpackage-installer-master/master/hello.rtf'
 - cmd: '"C:\Program Files (x86)\NSIS\makensis.exe" dbumush_installer.nsi'
 - ps: |
-#      function Insert-Content { param ( [String]$Path ); process { $( ,$_; Get-Content $Path -ea SilentlyContinue) | Out-File -encoding ASCII $Path } }
-#      "aard_req_novisuals_mode = true  -- this line added by the no-visuals installer`r`n" | Insert-Content .\MUSHclient\lua\aard_requirements.lua
-#      Move-Item .\MUSHclient\worlds\DBUMMO_no_visuals.mcl .\MUSHclient\worlds\DBUMMO.mcl -force
-#      $env:VIAPPOUT = 'OutFile "DBUMMO_MUSHclient_${PackageVersion}_no_visuals.exe"'
-#      (Get-Content dbumush_installer.nsi) | ForEach-Object { $_ -replace "OutFile.+" , "$env:VIAPPOUT" } | Set-Content dbumush_installer.nsi
-#- cmd: '"C:\Program Files (x86)\NSIS\makensis.exe" dbumush_installer.nsi'
-#- ps: |
-#      7z a -tzip -mx=9 -mfb=257 DBUMMO_MUSHclient_$($env:PACKAGE_VERSION)_no_visuals_no_install.zip .\MUSHclient
+      function Insert-Content { param ( [String]$Path ); process { $( ,$_; Get-Content $Path -ea SilentlyContinue) | Out-File -encoding ASCII $Path } }
+      "aard_req_novisuals_mode = true  -- this line added by the no-visuals installer`r`n" | Insert-Content .\MUSHclient\lua\aard_requirements.lua
+      Move-Item .\MUSHclient\worlds\DBUMMO_no_visuals.mcl .\MUSHclient\worlds\DBUMMO.mcl -force
+      $env:VIAPPOUT = 'OutFile "DBUMMO_MUSHclient_${PackageVersion}_no_visuals.exe"'
+      (Get-Content dbumush_installer.nsi) | ForEach-Object { $_ -replace "OutFile.+" , "$env:VIAPPOUT" } | Set-Content dbumush_installer.nsi
+- cmd: '"C:\Program Files (x86)\NSIS\makensis.exe" dbumush_installer.nsi'
+- ps: |
+      7z a -tzip -mx=9 -mfb=257 DBUMMO_MUSHclient_$($env:PACKAGE_VERSION)_no_visuals_no_install.zip .\MUSHclient
       Get-ChildItem .\DBUMMO_MUSHclient_r*.exe -Recurse | % { Push-AppveyorArtifact $_.FullName -FileName $_.Name }
       Get-ChildItem .\DBUMMO_MUSHclient_r*.zip -Recurse | % { Push-AppveyorArtifact $_.FullName -FileName $_.Name }
       git checkout -- .
