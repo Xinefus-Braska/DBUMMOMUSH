@@ -211,8 +211,8 @@
     </div>
     <div>
     Quit MUSHclient before running any update installer.<br><br>
-    <a class="button" href="https://github.com/Xinefus-Braska/DBUMMOMUSH/releases/download/%%REV%%/DBUMMO_MUSHclient_%%REV%%_no_visuals.exe">Download the %%REV%% non-visual base for screen readers</a>
-    &nbsp;&nbsp;or&nbsp;&nbsp;
+    <!-- <a class="button" href="https://github.com/Xinefus-Braska/DBUMMOMUSH/releases/download/%%REV%%/DBUMMO_MUSHclient_%%REV%%_no_visuals.exe">Download the %%REV%% non-visual base for screen readers</a>
+    // &nbsp;&nbsp;or&nbsp;&nbsp; -->
     <a class="button" href="https://github.com/Xinefus-Braska/DBUMMOMUSH/releases/download/%%REV%%/DBUMMO_MUSHclient_%%REV%%.exe">Download %%REV%% with full visuals</a>
     </div>
     <div class="description">
