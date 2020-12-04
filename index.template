@@ -199,10 +199,7 @@
     <h2>Important installer details:</h2>
     <ol>
         <li>
-        This page has download links for two variants of the DBUMMO MUSHclient Package installer.<br> The only difference between them is that, if a world file is not already present, the one called the "non-visual base" installer initially loads a different default set of plugins in the default DBUMMO world file, eschewing graphical plugins that are incompatible with text to speech interaction. It still loads the mapper plugin, just with the visual map display hidden.
-        </li>
-        <li>
-        These installers do not overwrite your existing DBUMMO.db mapper database file, DBUMMO.mcl world file, or plugin state files, so you no longer need to do any of the old manual file edits, imports, or copies to complete an upgrade. <em style="color:darkgreen">You can just install over the same location as your previous DBUMMO MUSHclient install and that's it.</em> If you're concerned about accidents, you can always make a backup copy of your whole MUSHclient folder first.
+        This installer does not overwrite your existing DBUMMO.db mapper database file, DBUMMO.mcl world file, or plugin state files, so you do not need to do any manual file edits, imports, or copies to complete an upgrade. <em style="color:darkgreen">You can just install over the same location as your previous DBUMMO MUSHclient install and that's it.</em> If you're concerned about accidents, you can always make a backup copy of your whole MUSHclient folder first.
         </li>
         <li>
         For information about scary warnings from your computer relating to unsigned executables or potential viruses, please read <a href="trust_faq.html">Trust FAQ</a>.
