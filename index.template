@@ -8,7 +8,7 @@
   <script src="js/store2.js"></script>
   <script src="js/store.cache.js"></script>
 
-  <link rel="stylesheet" href="//fiendish.github.io/gh-fork-banner/gh.css">
+  <link rel="stylesheet" href="//xinefus-braska.github.io/gh-fork-banner/gh.css">
   <style>
   html, body {
     padding: 0;
@@ -153,7 +153,7 @@
                     downloadCount += asset.download_count;
                     }
                 }
-                var allReleasesInfo = "<span style='opacity: 0.5'>All installer versions combined since r1871 (the first installer build), <span class='number'>" + downloadCount.toLocaleString() + "</span> times.";
+                var allReleasesInfo = "<span style='opacity: 0.5'>All installer versions combined since r101 (the first installer build), <span class='number'>" + downloadCount.toLocaleString() + "</span> times.";
                 Storage.set('allReleasesInfo', allReleasesInfo, fiveMinutes);
 
                 SetAllReleasesInfo(allReleasesInfo);
