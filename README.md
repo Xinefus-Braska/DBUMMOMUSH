@@ -5,4 +5,4 @@ Further help can be found in-game on the ask channel.
 
 **Contributors**: Submitting a Pull Request? Please target the development branch. Thanks!
 
-![screenshot of the client](https://github.com/Xinefus-Braska/DBUMMOMUSH/tree/gh-pages/images/DBUMMO.png)
+![screenshot of the client](https://raw.githubusercontent.com/Xinefus-Braska/DBUMMOMUSH/tree/gh-pages/images/DBUMMO.png)
