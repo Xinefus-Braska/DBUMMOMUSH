@@ -78,9 +78,9 @@
     <p><b>Installation:</b></br>Unzip the client into a new directory. A good naming convention to use is either the release number of the client (for example, r1825) or a combination of the date such as 'mush02012012'. Recommended approach would be to use the release number. In the example below, all Mushclient releases are under 'd:\mush' and the various versions are under that.</p>
     <img src='images/mushclient-directories.jpg' title='Mushclient directories' alt='Mushclient directories'/>
     <br>
-    <p><b>Mapper Files:</b></br>Assuming your world name is the default 'DBUMMO', copy the DBUMMO.db.* files and (if it exists) the DBUMMO_bookmarks.db file from the old directory to the new directory:</p>
+    <!-- <p><b>Mapper Files:</b></br>Assuming your world name is the default 'DBUMMO', copy the DBUMMO.db.* files and (if it exists) the DBUMMO_bookmarks.db file from the old directory to the new directory:</p>
     <img src='images/mud-mapper-database-files.jpg' title='Mud mapper database files' alt='Mud mapper database files'/>
-    <br><br>
+    <br><br>-->
     <p><b>Plugin Configuration:</b></br>Each plugin has its own 'state' file which stores the configuration for that plugin, including the size and position of the windows. Because new variables can often be added with newer releases, it is usually safer to use the state files with the new version and resize the windows / reconfigure the plugins yourself. If you really want to copy all your settings from the old version to the new version, copy the entire contents of the world\plugins\state direcory.</p>
     <img src='images/mushclient-plugin-state.jpg' title='Mushclient MUD State Files' alt='Mushclient MUD state files'/>
     <br><br>
