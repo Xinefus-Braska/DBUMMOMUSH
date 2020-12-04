@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 <!DOCTYPE muclient>
-<!-- Thanks to Orogan for past help. I wish I remembered what with, but I didn't write it down. -->
+
 <muclient>
 <plugin
    name="DBUMMO_Chat_Window"

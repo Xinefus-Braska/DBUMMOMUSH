@@ -1,5 +1,17 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 <!DOCTYPE muclient>
+
+<muclient>
+<plugin
+   name="Repaint_Buffer"
+   author="Braska"
+   id="abc1a0944ae4af7586ce88dc"
+   language="Lua"
+   purpose="Condenses repaint calls from other plugins to reduce display overhead"
+   date_written="2010-12-01 11:51:55"
+   requires="4.70"
+   version="1.0"
+>
 <!--
 
 Thanks to Fiendish of Aardwolf who provided the base and starting point for all of this.
@@ -10,18 +22,6 @@ Thank you!!
 My Github : https://github.com/Xinefus-Braska
 
  -->
-<muclient>
-<plugin
-   name="Repaint_Buffer"
-   author="Fiendish"
-   id="abc1a0944ae4af7586ce88dc"
-   language="Lua"
-   purpose="Condenses repaint calls from other plugins to reduce display overhead"
-   date_written="2010-12-01 11:51:55"
-   requires="4.70"
-   version="1.0"
->
-
 </plugin>
 
 <script>
