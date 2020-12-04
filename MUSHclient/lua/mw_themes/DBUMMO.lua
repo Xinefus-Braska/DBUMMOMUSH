@@ -1,6 +1,6 @@
 -- Copy this file to create your own custom themes, but please do not modify this file.
 
--- CHARCOAL THEME
+-- DBUMMO THEME
 return {
    LOGO_OPACITY = 0.02,                    -- Main output background logo
 

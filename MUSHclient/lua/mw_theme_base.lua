@@ -21,7 +21,7 @@ Steps for use: (also see https://github.com/fiendish/aardwolfclientpackage/wiki/
 
 Thanks to Fiendish of Aardwolf who provided the base and starting point for all of this.
 Original files sourced from: https://github.com/fiendish/aardwolfclientpackage
-My process: http://www.gammon.com.au/forum/?id=14718
+
 Thank you!!
 
 My Github for DBNU: https://github.com/Xinefus-Braska
@@ -40,7 +40,7 @@ function b9315e040989d3f81f4328d6() -- Theme_controller
 end
 
 theme_dir = GetInfo(66).."lua\\mw_themes\\"
-theme_file = "Charcoal.lua"
+theme_file = "DBUMMO.lua"
 
 function get_theme()
    return theme_file
