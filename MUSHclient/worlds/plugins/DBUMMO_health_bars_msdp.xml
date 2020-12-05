@@ -63,11 +63,10 @@ local LEFT_MARGIN     = 10
 local TOP_MARGIN      = 6
 local stacked = 0
 local showLabels = 1
-local reverseTNL = 1
 graphicalMode = tonumber(GetVariable("graphicalMode") or 1)
-local defaultShowBar = {Health={"Health :",true,"Health:",0x00ff00,0x004400}, Ki={"Ki     :",true,"Ki:",0xff5500,0x442200}, Stamina={"Stamina:",true,"Stamina:",0xffff00,0xd1ce00}, PL={"PL     :",true,"PL:",0xffffff,0x444444}, Focus={"Focus  :",true, "Focus:",0x00d7ff,0x00ffff}}
+local defaultShowBar = {Health={"Health :",true,"Health:",0x00ff00,0x004400}, Ki={"Ki     :",true,"Ki:",0xff5500,0x442200}, Stamina={"Stamina:",true,"Stamina:",0xffff00,0xd1ce00}, PL={"PL     :",true,"PL:",0xffffff,0x444444}, Focus={"Focus  :",true, "Focus:",0x00d7ff,0x00ffff}, Focus={"Enemy :",true, "Enemy:",0x0000ff,0x00ffff}}
 showBar = defaultShowBar
-local barIndex = {"Health", "Ki", "Stamina", "PL", "Focus"}
+local barIndex = {"Health", "Ki", "Stamina", "PL", "Focus", "Enemy"}
 
 thresh1active = tonumber (GetVariable("thresh1active")) or 0
 thresh2active = tonumber (GetVariable("thresh2active")) or 0
@@ -315,6 +314,49 @@ function DisplayStatsPage()
           xpos = xpos+(graphicalMode*bar_width)+LEFT_MARGIN
         end
       end
+      bar = "Fight"
+      if (showBar[bar][2] == true) then
+        fighting = getmsdp("OPPONENT_NAME")
+        if fighting ~= "" and fighting ~= null then
+          if getmsdp("OPPONENT_HEALTH") ~= "0" then
+            if showLabels == 1 then
+              if stacked == 1 then
+                WindowText(win, font_id, showBar[bar][1], xpos,  ypos, 0, 0, showBar[bar][4], false)
+              else
+                xpos = xpos + WindowText(win, font_id, showBar[bar][3], xpos,  ypos, 0, 0, showBar[bar][4], false)
+              end
+            end
+          end
+          if graphicalMode == 1 then
+            gauge(win,showBar[bar][3],tonumber(getmsdp("OPPONENT_HEALTH")),tonumber(getmsdp("OPPONENT_HEALTH_MAX")),xpos+label_width,ypos,bar_width,line_height,showBar[bar][4],0x000000,num_ticks,0x000000,showBar[bar][5],nil,flat_gauges==1)
+            if overlay_numbers ~= 0 then
+              txt = string.lpad(getmsdp("OPPONENT_HEALTH").."%", 4, ' ')
+              txtlen = WindowTextWidth(win,font_id,txt)
+              outlined_text(win, font_id, txt, xpos+label_width+((bar_width-txtlen)/2), ypos, 0, 0, 0xeeeeee, utf8)
+            end
+          else
+            xpos = xpos + (((stacked == 0) and 1) or 0)*WindowText(win, font_id, " ["..string.format("%3d",getmsdp("OPPONENT_HEALTH")).."%]", xpos+label_width, ypos, 0, 0, showBar[bar][4], false)
+          end
+        else
+          if showLabels == 1 then
+            if stacked == 1 then
+              WindowText(win, font_id, showBar[bar][1], xpos, ypos, 0, 0, 0x444444, false)
+            else
+              xpos = xpos + WindowText(win, font_id, showBar[bar][3], xpos, ypos, 0, 0, 0x444444, false)
+            end
+          end
+          if graphicalMode == 1 then
+            gauge(win,showBar[bar][3],tonumber(getmsdp("OPPONENT_HEALTH")),tonumber(getmsdp("OPPONENT_HEALTH_MAX")),xpos+label_width,ypos,bar_width,line_height,0x444444,0x000000,num_ticks,0x000000,0x222222,nil,flat_gauges==1)
+          else
+            xpos = xpos + (((stacked == 0) and 1) or 0)*WindowText(win, font_id, " [    ]", xpos+label_width, ypos, 0, 0, 0x444444, false)
+          end
+        end
+        if stacked == 1 then
+          ypos = ypos + line_height + 1
+        else
+          xpos = xpos+(graphicalMode*bar_width)+LEFT_MARGIN
+        end
+      end
   end
 
   Theme.DressWindow(win, nil, nil)
@@ -417,9 +459,6 @@ function right_click_menu ()
          if newcolor ~= -1 then
             thresh2color = newColor
          end
-      --elseif numResult == 28 then
-         -- reverse tnl
-      --   reverseTNL = (((reverseTNL == 0) and 1) or 0)
     elseif numResult == 25 then
          -- text mode
          graphicalMode = (((graphicalMode == 0) and 1) or 0)
@@ -544,7 +583,6 @@ function OnPluginSaveState ()
    barTexts = ""
    SetVariable("stacked", stacked)
    SetVariable("showLabels", showLabels)
-   SetVariable("reverseTNL", reverseTNL)
    SetVariable("enabled", tostring(GetPluginInfo(GetPluginID(), 17)))
    if WindowInfo(win, 3) and WindowInfo(win, 4) then
       width = WindowInfo(win, 3)
@@ -596,7 +634,6 @@ function OnPluginInstall()
    width      = tonumber(GetVariable("width")) or default_width
    stacked    = tonumber(GetVariable("stacked")) or stacked
    showLabels = tonumber(GetVariable("showLabels")) or showLabels
-   reverseTNL = tonumber(GetVariable("reverseTNL")) or reverseTNL
    flat_gauges = tonumber(GetVariable("flat_gauges")) or 0
    overlay_numbers = tonumber (GetVariable("overlay_numbers")) or 1
    showBar = defaultShowBar
