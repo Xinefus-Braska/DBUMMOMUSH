@@ -64,9 +64,9 @@ local TOP_MARGIN      = 6
 local stacked = 0
 local showLabels = 1
 graphicalMode = tonumber(GetVariable("graphicalMode") or 1)
-local defaultShowBar = {Health={"Health :",true,"Health:",0x00ff00,0x004400}, Ki={"Ki     :",true,"Ki:",0xff5500,0x442200}, Stamina={"Stamina:",true,"Stamina:",0xffff00,0xd1ce00}, PL={"PL     :",true,"PL:",0xffffff,0x444444}, Focus={"Focus  :",true, "Focus:",0x00d7ff,0x00ffff}, Focus={"Enemy :",true, "Enemy:",0x0000ff,0x00ffff}}
+local defaultShowBar = {Health={"Health :",true,"Health:",0x00ff00,0x004400}, Ki={"Ki     :",true,"Ki:",0xff5500,0x442200}, Stamina={"Stamina:",true,"Stamina:",0xffff00,0xd1ce00}, PL={"PL     :",true,"PL:",0xffffff,0x444444}, Focus={"Focus  :",true, "Focus:",0x00d7ff,0x00ffff}, Fight={"Enemy  :",true, "Enemy:",0x0000ff,0x000080}}
 showBar = defaultShowBar
-local barIndex = {"Health", "Ki", "Stamina", "PL", "Focus", "Enemy"}
+local barIndex = {"Health", "Ki", "Stamina", "PL", "Focus", "Fight"}
 
 thresh1active = tonumber (GetVariable("thresh1active")) or 0
 thresh2active = tonumber (GetVariable("thresh2active")) or 0
@@ -346,7 +346,7 @@ function DisplayStatsPage()
             end
           end
           if graphicalMode == 1 then
-            gauge(win,showBar[bar][3],tonumber(getmsdp("OPPONENT_HEALTH")),tonumber(getmsdp("OPPONENT_HEALTH_MAX")),xpos+label_width,ypos,bar_width,line_height,0x444444,0x000000,num_ticks,0x000000,0x222222,nil,flat_gauges==1)
+            gauge(win,showBar[bar][3],tonumber(getmsdp("OPPONENT_HEALTH")),100,xpos+label_width,ypos,bar_width,line_height,0x444444,0x000000,num_ticks,0x000000,0x222222,nil,flat_gauges==1)
           else
             xpos = xpos + (((stacked == 0) and 1) or 0)*WindowText(win, font_id, " [    ]", xpos+label_width, ypos, 0, 0, 0x444444, false)
           end
@@ -387,7 +387,7 @@ function right_click_menu ()
       end
    end
    menustring = menustring .. ">Activate/De-activate|"..activeBars.."<|"
-   menustring = menustring .. ">Configure Colors|>Health|Main|Border|<|>Ki|Main|Border|<|>Stamina|Main|Border|<|>PL|Main|Border|<|>Focus|Main|Border|<|<|"
+   menustring = menustring .. ">Configure Colors|>Health|Main|Border|<|>Ki|Main|Border|<|>Stamina|Main|Border|<|>PL|Main|Border|<|>Focus|Main|Border|<|>Enemy|Main|Border|<|<|"
    menustring = menustring .. ">HP Thresholds|>First|"..(((thresh1active == 1) and "+") or "").."Activate|Set Percent ("..thresh1percent.."%)|Set Color ("..RGBColourToName(thresh1color)..")|<|>Second|"..(((thresh2active == 1) and "+") or "").."Activate|Set Percent ("..thresh2percent.."%)|Set Color ("..RGBColourToName(thresh2color)..")|<|<|"
    menustring = menustring .. ((graphicalMode==0 and "+") or "").."Text Mode|"..((flat_gauges==1 and "+") or "").."Use Flat Gauges|>Overlay Numbers|"..((overlay_numbers==0 and "+") or "").."None"..(((graphicalMode==0) and " (Same as \"Standard\" in Text Mode)") or "").."|"..((overlay_numbers==1 and "+") or "").."Standard|"..((overlay_numbers==2 and "+") or "").."Percentages|"..((overlay_numbers==3 and "+") or "").."Standard+Percentages|<|-|>(In case of emergency)|Reduce Size|<|"
 
@@ -416,22 +416,22 @@ function right_click_menu ()
             stacked = 1
             height = ((line_height+1)*numBars)+(TOP_MARGIN*2)
          end
-      elseif numResult >= 4 and numResult <= 8 then
+      elseif numResult >= 4 and numResult <= 9 then
          -- activate/de-activate
          showBar[barIndex[numResult-3]][2] = not showBar[barIndex[numResult-3]][2]
-      elseif numResult >= 9 and numResult <= 18 then
+      elseif numResult >= 10 and numResult <= 21 then
          -- change colors
-         local colourIndex = 5
+         local colourIndex = 4
          if (numResult % 2 == 1) then
-            colourIndex = 4
+            colourIndex = 5
          end
-         local newcolour = PickColour (showBar[barIndex[math.ceil((numResult-8)/2)]][colourIndex])
+         local newcolour = PickColour (showBar[barIndex[math.ceil((numResult-9)/2)]][colourIndex])
          if newcolour ~= -1 then
-            showBar[barIndex[math.ceil((numResult-8)/2)]][colourIndex] = newcolour
+            showBar[barIndex[math.ceil((numResult-9)/2)]][colourIndex] = newcolour
          end
-      elseif numResult == 19 then
+      elseif numResult == 22 then
          thresh1active = (((thresh1active == 0) and 1) or 0)
-      elseif numResult == 20 then
+      elseif numResult == 23 then
          local perc = utils.inputbox( "I want the HP bars to change color when they drop below this percent...\n(enter a whole number between 1 and 100)", "Group Monitor HP Threshold #1", thresh1percent, nil, nil, {validate=validate_percent})
          if perc then
             if string.sub(perc, -1) == "%" then
@@ -439,14 +439,14 @@ function right_click_menu ()
             end
             thresh1percent = tonumber(perc)
          end
-      elseif numResult == 21 then
+      elseif numResult == 24 then
          local newColor = PickColour (thresh1color)
          if newcolor ~= -1 then
             thresh1color = newColor
          end
-      elseif numResult == 22 then
+      elseif numResult == 25 then
          thresh2active = (((thresh2active == 0) and 1) or 0)
-      elseif numResult == 23 then
+      elseif numResult == 26 then
          local perc = utils.inputbox( "I want the HP bars to change color when they drop below this percent...\n(enter a whole number between 1 and 100)", "Group Monitor HP Threshold #2", thresh2percent, nil, nil, {validate=validate_percent})
          if perc then
             if string.sub(perc, -1) == "%" then
@@ -454,25 +454,25 @@ function right_click_menu ()
             end
             thresh2percent = tonumber(perc)
          end
-      elseif numResult == 24 then
+      elseif numResult == 27 then
          local newColor = PickColour (thresh2color)
          if newcolor ~= -1 then
             thresh2color = newColor
          end
-    elseif numResult == 25 then
+    elseif numResult == 28 then
          -- text mode
          graphicalMode = (((graphicalMode == 0) and 1) or 0)
-      elseif numResult == 26 then
-         flat_gauges = (((flat_gauges == 0) and 1) or 0)
-      elseif numResult == 27 then
-         overlay_numbers = 0
-      elseif numResult == 28 then
-         overlay_numbers = 1
       elseif numResult == 29 then
-         overlay_numbers = 2
+         flat_gauges = (((flat_gauges == 0) and 1) or 0)
       elseif numResult == 30 then
-         overlay_numbers = 3
+         overlay_numbers = 0
       elseif numResult == 31 then
+         overlay_numbers = 1
+      elseif numResult == 32 then
+         overlay_numbers = 2
+      elseif numResult == 33 then
+         overlay_numbers = 3
+      elseif numResult == 34 then
          -- reduce size
          font_name = default_font_name
          font_size = default_font_size
@@ -497,7 +497,7 @@ function OnPluginBroadcast (msg, id, name, text)
       return
     end
     if (text == "HEALTH" or text == "MANA" or text == "STAMINA" or text == "CURRENTPL" or text == "FOCUS" or
-      text == "HEALTH_MAX" or text == "MANA_MAX" or text == "STAMINAMAX" or text == "FOCUS_MAX") then -- or text == "BASEPL" some reason basepl causes a bug.
+      text == "HEALTH_MAX" or text == "MANA_MAX" or text == "STAMINAMAX" or text == "FOCUS_MAX" or text == "OPPONENT_HEALTH" or text == "OPPONENT_HEALTH_MAX") then -- or text == "BASEPL" some reason basepl causes a bug.
       page_built = true
       DisplayStatsPage()
     end
