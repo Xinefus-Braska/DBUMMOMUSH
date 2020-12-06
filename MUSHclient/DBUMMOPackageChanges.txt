@@ -5,6 +5,7 @@ r104
 - fixed default fonts
 - removed no_visuals version
 
+r103
 - moved around some toolbars
 - updated credits and webpage
 - DBUMMO Theme as auto
