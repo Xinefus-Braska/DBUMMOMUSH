@@ -157,7 +157,7 @@ function DoNextSimpleBar(bar, val, maxval, flip, stacked_label, unstacked_label)
             num_val = tonumber(val)
          end
          if overlay_numbers == 1 or overlay_numbers == 3 or (graphicalMode == 0 and overlay_numbers ~= 2) then
-            maxlen = math.max(#maxval, #val)
+            maxlen = math.max(#shorten(tonumber(maxval)), #shorten(tonumber(val)))
             txt = string.lpad(shorten(num_val), maxlen, ' ').."/"..string.rpad(shorten(num_maxval),maxlen,' ')
          end
          if overlay_numbers == 2 or overlay_numbers == 3 then
@@ -205,7 +205,7 @@ function DoNextSimpleBar(bar, val, maxval, flip, stacked_label, unstacked_label)
           txtlen = WindowTextWidth(win,font_id,txt)
           outlined_text(win, font_id, txt, xpos+label_width+((bar_width-txtlen)/2), ypos, 0, 0, 0xeeeeee, utf8)
         end
-      else
+      else --text mode
          xpos = xpos + (((stacked == 0) and 1) or 0)*WindowText(win, font_id, " ["..txt.."]", xpos+label_width, ypos, 0, 0, showBar[bar][4], false)
       end
 
@@ -273,6 +273,9 @@ function DisplayStatsPage()
       --DoNextSimpleBar("Focus", getmsdp("FOCUS"), getmsdp("FOCUS_MAX"))
       bar = "Focus"
       if (showBar[bar][2] == true) then
+        focus = tonumber(getmsdp("FOCUS"))
+        focusmax = tonumber(getmsdp("FOCUS_MAX"))
+        txt = ""
         fighting = getmsdp("OPPONENT_NAME")
         if fighting ~= "" and fighting ~= null then
           if getmsdp("FOCUS") ~= "0" then
@@ -285,16 +288,22 @@ function DisplayStatsPage()
             end
           end
           if graphicalMode == 1 then
-            gauge(win,showBar[bar][3],tonumber(getmsdp("FOCUS")),tonumber(getmsdp("FOCUS_MAX")),xpos+label_width,ypos,bar_width,line_height,showBar[bar][4],0x000000,num_ticks,0x000000,showBar[bar][5],nil,flat_gauges==1)
+            gauge(win,showBar[bar][3],focus,focusmax,xpos+label_width,ypos,bar_width,line_height,showBar[bar][4],0x000000,num_ticks,0x000000,showBar[bar][5],nil,flat_gauges==1)
+            if overlay_numbers == 1 or overlay_numbers == 3 or (graphicalMode == 0 and overlay_numbers ~= 2) then
+               maxlen = math.max(#shorten(focusmax), #shorten(focus))
+               txt = string.lpad(shorten(focus), maxlen, ' ').."/"..string.rpad(shorten(focusmax),maxlen,' ')
+            end
+            if overlay_numbers == 2 or overlay_numbers == 3 then
+               txt = txt..((overlay_numbers == 3 and " (") or "")..string.lpad(string.format('%d',100*focus/focusmax).."%",4,' ')..((overlay_numbers == 3 and ")") or "")
+            end
             if overlay_numbers ~= 0 then
-              txt = string.lpad(getmsdp("FOCUS").."%", 4, ' ')
               txtlen = WindowTextWidth(win,font_id,txt)
               outlined_text(win, font_id, txt, xpos+label_width+((bar_width-txtlen)/2), ypos, 0, 0, 0xeeeeee, utf8)
             end
           else
-            xpos = xpos + (((stacked == 0) and 1) or 0)*WindowText(win, font_id, " ["..string.format("%3d",getmsdp("FOCUS")).."%]", xpos+label_width, ypos, 0, 0, showBar[bar][4], false)
+            xpos = xpos + (((stacked == 0) and 1) or 0)*WindowText(win, font_id, " ["..txt.."]", xpos+label_width, ypos, 0, 0, showBar[bar][4], false)
           end
-        else
+        else --darkened part...
           if showLabels == 1 then
             if stacked == 1 then
               WindowText(win, font_id, showBar[bar][1], xpos, ypos, 0, 0, 0x444444, false)
@@ -303,8 +312,8 @@ function DisplayStatsPage()
             end
           end
           if graphicalMode == 1 then
-            gauge(win,showBar[bar][3],tonumber(getmsdp("FOCUS")),tonumber(getmsdp("FOCUS_MAX")),xpos+label_width,ypos,bar_width,line_height,0x444444,0x000000,num_ticks,0x000000,0x222222,nil,flat_gauges==1)
-          else
+            gauge(win,showBar[bar][3],focus,focusmax,xpos+label_width,ypos,bar_width,line_height,0x444444,0x000000,num_ticks,0x000000,0x222222,nil,flat_gauges==1)
+          else -- text mode
             xpos = xpos + (((stacked == 0) and 1) or 0)*WindowText(win, font_id, " [    ]", xpos+label_width, ypos, 0, 0, 0x444444, false)
           end
         end
@@ -316,6 +325,9 @@ function DisplayStatsPage()
       end
       bar = "Fight"
       if (showBar[bar][2] == true) then
+        ehp = tonumber(getmsdp("OPPONENT_HEALTH"))
+        ehpmax = tonumber(getmsdp("OPPONENT_HEALTH_MAX"))
+        txt = ""
         fighting = getmsdp("OPPONENT_NAME")
         if fighting ~= "" and fighting ~= null then
           if getmsdp("OPPONENT_HEALTH") ~= "0" then
@@ -329,15 +341,21 @@ function DisplayStatsPage()
           end
           if graphicalMode == 1 then
             gauge(win,showBar[bar][3],tonumber(getmsdp("OPPONENT_HEALTH")),tonumber(getmsdp("OPPONENT_HEALTH_MAX")),xpos+label_width,ypos,bar_width,line_height,showBar[bar][4],0x000000,num_ticks,0x000000,showBar[bar][5],nil,flat_gauges==1)
+            if overlay_numbers == 1 or overlay_numbers == 3 or (graphicalMode == 0 and overlay_numbers ~= 2) then
+               maxlen = math.max(#shorten(ehpmax), #shorten(ehp))
+               txt = string.lpad(shorten(ehp), maxlen, ' ').."/"..string.rpad(shorten(ehpmax),maxlen,' ')
+            end
+            if overlay_numbers == 2 or overlay_numbers == 3 then
+               txt = txt..((overlay_numbers == 3 and " (") or "")..string.lpad(string.format('%d',100*ehp/ehpmax).."%",4,' ')..((overlay_numbers == 3 and ")") or "")
+            end
             if overlay_numbers ~= 0 then
-              txt = string.lpad(getmsdp("OPPONENT_HEALTH").."%", 4, ' ')
               txtlen = WindowTextWidth(win,font_id,txt)
               outlined_text(win, font_id, txt, xpos+label_width+((bar_width-txtlen)/2), ypos, 0, 0, 0xeeeeee, utf8)
             end
-          else
-            xpos = xpos + (((stacked == 0) and 1) or 0)*WindowText(win, font_id, " ["..string.format("%3d",getmsdp("OPPONENT_HEALTH")).."%]", xpos+label_width, ypos, 0, 0, showBar[bar][4], false)
+          else -- text mode
+            xpos = xpos + (((stacked == 0) and 1) or 0)*WindowText(win, font_id, " ["..txt.."]", xpos+label_width, ypos, 0, 0, showBar[bar][4], false)
           end
-        else
+        else -- darkened part
           if showLabels == 1 then
             if stacked == 1 then
               WindowText(win, font_id, showBar[bar][1], xpos, ypos, 0, 0, 0x444444, false)
@@ -346,8 +364,8 @@ function DisplayStatsPage()
             end
           end
           if graphicalMode == 1 then
-            gauge(win,showBar[bar][3],tonumber(getmsdp("OPPONENT_HEALTH")),100,xpos+label_width,ypos,bar_width,line_height,0x444444,0x000000,num_ticks,0x000000,0x222222,nil,flat_gauges==1)
-          else
+            gauge(win,showBar[bar][3],ehp,100,xpos+label_width,ypos,bar_width,line_height,0x444444,0x000000,num_ticks,0x000000,0x222222,nil,flat_gauges==1)
+          else -- text mode
             xpos = xpos + (((stacked == 0) and 1) or 0)*WindowText(win, font_id, " [    ]", xpos+label_width, ypos, 0, 0, 0x444444, false)
           end
         end

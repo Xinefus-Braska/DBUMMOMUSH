@@ -1,10 +1,15 @@
 DBUMMO Client Package Major Changes List
 
+r105
+- fixed bugs in enemy hpbars: Now you can turn off that prompt! 
+- 104 and 105 may require clearing of your state files. Ask me if you want to know how to do this.
+
 r104
 - added enemy to hpbars
 - fixed default fonts
 - removed no_visuals version
 
+r103
 - moved around some toolbars
 - updated credits and webpage
 - DBUMMO Theme as auto
