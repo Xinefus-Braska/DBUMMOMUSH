@@ -1,7 +1,7 @@
 DBUMMO Client Package Major Changes List
 
 r106
-- fixed an error in the defaults of the sql file. 
+- fixed an error in the defaults of the sql file. Thanks @Kumberu!
 
 r105
 - fixed bugs in enemy hpbars: Now you can turn off that prompt!
