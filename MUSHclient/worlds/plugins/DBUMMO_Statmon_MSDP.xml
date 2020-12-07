@@ -160,7 +160,7 @@ function BuildStatsPage()
       })
     end
 
-    if ( getmsdp("RACE") == "Saibaman" and getmsdp("TRAIT") ~= 5) then
+    if ( getmsdp("RACE") == "Saibaman" and getmsdp("TRAIT") ~= "Sadala") then
       table.insert(cstyles, {
         {text="Root",textcolour=label_colors["Root"] or Theme.BODY_TEXT},
         bracket,
@@ -168,7 +168,7 @@ function BuildStatsPage()
         endbracket
       })
 
-    elseif ( getmsdp("RACE") == "Saibaman" and getmsdp("TRAIT") == 5) then
+    elseif ( getmsdp("RACE") == "Saibaman" and getmsdp("TRAIT") == "Sadala") then
       table.insert(cstyles, {
         {text="Root",textcolour=label_colors["Root"] or Theme.BODY_TEXT},
         bracket,
@@ -317,17 +317,17 @@ function BuildStatsPage()
     table.insert(cstyles, {
       {text="Earth",textcolour=label_colors["Earth"] or Theme.BODY_TEXT},
       bracket,
-      {text=string.format("%1s",getmsdp("EARTH")), textcolour=data_colors["Earth"]},
+      {text=string.format("%1s",getmsdp("DBEARTH")), textcolour=data_colors["Earth"]},
       slash, {text="7"},endbracket,
 
       {text="    Namek",textcolour=label_colors["Namek"] or Theme.BODY_TEXT},
       bracket,
-      {text=string.format("%1s",getmsdp("NAMEK")), textcolour=data_colors["Namek"]},
+      {text=string.format("%1s",getmsdp("DBNAMEK")), textcolour=data_colors["Namek"]},
       slash, {text="5"},endbracket,
 
       {text="    BStar",textcolour=label_colors["BStar"] or Theme.BODY_TEXT},
       bracket,
-      {text=string.format("%1s",getmsdp("BSTAR")), textcolour=data_colors["BStar"]},
+      {text=string.format("%1s",getmsdp("DBBLACK")), textcolour=data_colors["BStar"]},
       slash, {text="2"},endbracket
     })
 
@@ -384,20 +384,6 @@ function BuildStatsPage()
 
     table.insert(cstyles, {})
 
-    table.insert(cstyles, {
-      {text="HBTC Time Left :",textcolour=label_colors["HBTC"] or Theme.BODY_TEXT},
-      {text=string.format("%3s",getmsdp("HBTC")), textcolour=data_colors["HBTC"]},
-      {text=" mins.",textcolour=label_colors["HBTC"] or Theme.BODY_TEXT},
-
-      {text="      Can PK in :",textcolour=label_colors["PKTimer"] or Theme.BODY_TEXT},
-      {text=string.format("%3s",getmsdp("PKTIMER")), textcolour=data_colors["PKTimer"]},
-      {text=" mins.",textcolour=label_colors["PKTimer"] or Theme.BODY_TEXT},
-
-      {text="      Bounty Immunity :",textcolour=label_colors["BountyTimer"] or Theme.BODY_TEXT},
-      {text=string.format("%3s",getmsdp("BOUNTYTIMER")), textcolour=data_colors["BountyTimer"]},
-      {text=" mins.",textcolour=label_colors["BountyTimer"] or Theme.BODY_TEXT}
-    })
-
     --fighting = getmsdp("OPPONENT_NAME")
 
     --if fighting ~= "" and fighting ~= null then
@@ -442,7 +428,7 @@ function BuildStatsPage()
         })
       end
 
-      if ( getmsdp("RACE") == "Saibaman" and getmsdp("TRAIT") ~= 5) then
+      if ( getmsdp("RACE") == "Saibaman" and getmsdp("TRAIT") ~= "Sadala") then
         table.insert(cstyles, {
           {text="Root",textcolour=label_colors["Root"] or Theme.BODY_TEXT},
           bracket,
@@ -450,7 +436,7 @@ function BuildStatsPage()
           endbracket
         })
 
-      elseif ( getmsdp("RACE") == "Saibaman" and getmsdp("TRAIT") == 5) then
+      elseif ( getmsdp("RACE") == "Saibaman" and getmsdp("TRAIT") == "Sadala") then
         table.insert(cstyles, {
           {text="Root",textcolour=label_colors["Root"] or Theme.BODY_TEXT},
           bracket,
@@ -623,7 +609,7 @@ function BuildStatsPage()
       table.insert(cstyles, {
         {text="Earth",textcolour=label_colors["Earth"] or Theme.BODY_TEXT},
         bracket,
-        {text=string.format("%1s",getmsdp("EARTH")), textcolour=data_colors["Earth"]},
+        {text=string.format("%1s",getmsdp("DBEARTH")), textcolour=data_colors["Earth"]},
         slash, {text="7"},
         endbracket
       })
@@ -631,7 +617,7 @@ function BuildStatsPage()
       table.insert(cstyles, {
         {text="Namek",textcolour=label_colors["Namek"] or Theme.BODY_TEXT},
         bracket,
-        {text=string.format("%1s",getmsdp("NAMEK")), textcolour=data_colors["Namek"]},
+        {text=string.format("%1s",getmsdp("DBNAMEK")), textcolour=data_colors["Namek"]},
         slash, {text="5"},
         endbracket
       })
@@ -639,7 +625,7 @@ function BuildStatsPage()
       table.insert(cstyles, {
         {text="BStar",textcolour=label_colors["BStar"] or Theme.BODY_TEXT},
         bracket,
-        {text=string.format("%1s",getmsdp("BSTAR")), textcolour=data_colors["BStar"]},
+        {text=string.format("%1s",getmsdp("DBBLACK")), textcolour=data_colors["BStar"]},
         slash, {text="2"},
         endbracket
       })
@@ -703,31 +689,14 @@ function BuildStatsPage()
       })
 
       table.insert(cstyles, {
-        {text="Bounty     ",textcolour=label_colors["BK"] or Theme.BODY_TEXT},
+        {text="Bounty     ",textcolour=label_colors["BP"] or Theme.BODY_TEXT},
         bracket,
-        {text=string.format("%5s",getmsdp("BOUNTY")), textcolour=data_colors["BK"]},
+        {text=string.format("%5s",getmsdp("BP")), textcolour=data_colors["BP"]},
         endbracket
       })
 
       table.insert(cstyles, {})
 
-      table.insert(cstyles, {
-        {text="HBTC Time Left  :",textcolour=label_colors["HBTC"] or Theme.BODY_TEXT},
-        {text=string.format("%3s",getmsdp("HBTC")), textcolour=data_colors["HBTC"]},
-        {text=" mins.",textcolour=label_colors["HBTC"] or Theme.BODY_TEXT}
-      })
-
-      table.insert(cstyles, {
-        {text="Can PK in       :",textcolour=label_colors["PKTimer"] or Theme.BODY_TEXT},
-        {text=string.format("%3s",getmsdp("PKTIMER")), textcolour=data_colors["PKTimer"]},
-        {text=" mins.",textcolour=label_colors["PKTimer"] or Theme.BODY_TEXT}
-      })
-
-      table.insert(cstyles, {
-        {text="Bounty Immunity :",textcolour=label_colors["BountyTimer"] or Theme.BODY_TEXT},
-        {text=string.format("%3s",getmsdp("BOUNTYTIMER")), textcolour=data_colors["BountyTimer"]},
-        {text=" mins.",textcolour=label_colors["BountyTimer"] or Theme.BODY_TEXT}
-      })
       --fighting = getmsdp("OPPONENT_NAME")
 
       --if fighting ~= "" and fighting ~= null then
@@ -926,7 +895,7 @@ function OnPluginBroadcast (msg, id, name, text)
       text == "HEALTH_MAX" or text == "MANA_MAX" or text == "HEALTH" or text == "MANA" or text == "ALIGNMENT" or text == "MONEY" or
       text == "QP" or text == "RPP" or text == "SM" or text == "BP" or text == "TP" or text == "EARTH" or text == "NAMEK" or text == "BSTAR" or
       text == "BASEPL" or text == "CURRENTPL" or text == "RAGE" or text == "EGO" or text == "HYDRATION" or text == "RACE" or text == "AC" or
-      text == "ENCUMBRANCE" or text == "REBIRTHS")  then
+      text == "ENCUMBRANCE" or text == "REBIRTHS" or text == "BOOST")  then
       page_built = true
       RefreshPage()
     end
