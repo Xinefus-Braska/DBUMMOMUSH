@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE muclient>
+<muclient>
+  <plugin
+    name="Building_test"
+    author="Braska"
+    id="95e7f72e77573a5a4fc4a891"
+    language="Lua"
+    purpose="Form inputs for online building"
+    date_written="2020-12-11"
+    requires="4.73"
+    version="1.0"
+  >
+  <!--
+
+    Thanks to Fiendish of Aardwolf who provided the base and starting point for all of this.
+    Original files sourced from: https://github.com/fiendish/aardwolfclientpackage
+
+    Thank you!!
+
+    My Github : https://github.com/Xinefus-Braska
+
+  -->
+  <description trim="y">
+    USAGE:
+
+      Fill in the blanks and hit send...
+
+  </description>
+
+  </plugin>
+  <triggers>
+  </triggers>
+  <aliases>
+  </aliases>
+  <script>
+    <![CDATA[
+
+      require "themed_miniwindows"
+
+      my_window = ThemedBasicWindow("testwindow", 100, 100, 200, 150, "Hello", "center", true, 1)
+
+    ]]>
+  </script>
+</muclient>
