@@ -305,7 +305,7 @@ USAGE:
 <trigger
    enabled="n"
    name="say_get"
-   match="^(.+) says (.+)$"
+   match="^(.+) (says|says in an electronic voice), (.+)$"
    regexp="y"
    script="non_channel"
    omit_from_output="y"

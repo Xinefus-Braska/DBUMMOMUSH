@@ -1,5 +1,8 @@
 DBUMMO Client Package Major Changes List
 
+r107
+- Chat capture fixed for Android 'robotic voice.' Thank you @Kumberu!
+
 r106
 - fixed an error in the defaults of the sql file. Thanks @Kumberu!
 
