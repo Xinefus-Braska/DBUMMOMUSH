@@ -1,5 +1,8 @@
 DBUMMO Client Package Major Changes List
 
+r109
+- Minor fixes
+
 r108
 - Some reason the worldfile dissapeared...
 
