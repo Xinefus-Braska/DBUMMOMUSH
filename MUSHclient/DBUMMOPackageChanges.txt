@@ -1,5 +1,8 @@
 DBUMMO Client Package Major Changes List
 
+r108
+- Some reason the worldfile dissapeared...
+
 r107
 - Chat capture fixed for Android 'robotic voice.' Thank you @Kumberu!
 
